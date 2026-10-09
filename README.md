@@ -10,4 +10,4 @@ All official original papers (PDFs) of the Ark Project are packaged independentl
 The archive is organized according to the chronological and theoretical development of the work. Data upload is in progress.
 
 *   **`Legacy_Theories/`**: The foundations of the earlier pure theory, preserving the PDFs on gravitational Earth, gravitational fluids, and the zero tensor.
-*   **`Part1_Grand_Unified_Framework_CFD/`**: Part I. Resolution of three-dimensional Navier–Stokes singularities and a formulation of the global phase transition through topological trivialization.
+*   **`Part1_Grand_Unified_Framework_CFD/`**: Part 1. Resolution of three-dimensional Navier–Stokes singularities and a formulation of the global phase transition through topological trivialization.
