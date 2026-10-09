@@ -2,5 +2,5 @@
 **Grand Unified Framework of Macroscopic Gravity-Fluid Dynamics & M0 Tensor Architecture**
 
 ## 📄 Official Papers
-To maintain the purity and geometric integrity of the code repository, all original official papers (PDFs) of this Ark are independently packaged in the 'Releases' section on the right. All publications, including Part 1: The Grand Unified Framework, can be accessed and downloaded via the 0-point routing link below.
+All official original papers (PDFs) of the Ark Project are packaged independently in the Releases section on the right, so that the code repository keeps its purity and geometric integrity. Every publication, including Part I of the Grand Unified Framework, can be read and downloaded from the link below.
 * 📥 **Download Papers:** [Ark Project Archive Releases](https://github.com/ark-zeropoint/archive/releases)
