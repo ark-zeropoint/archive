@@ -1,0 +1,45 @@
+# Copyright (c) 2026 Jung Soo Kim (Ark Project).
+# SPDX-License-Identifier: CC-BY-NC-4.0
+# This file is part of the H.U.G.G.E.R + TZT Grand Unified Framework.
+# See the README.md file in the root directory for full license details.
+# 
+=============================================================================
+[VISUAL ABSTRACT] H.U.G.G.E.R + TZT Framework: 3-Stage Phase Transition
+=============================================================================
+This supplementary video provides a conceptual 3D holographic rendering of the 
+topological phase transitions mathematically proven in the main manuscript, 
+simulated entirely within the macroscopic 'Torus Model (T^3)'. 
+
+It visually demonstrates the dissolution of classical Navier-Stokes 
+singularities and the convergence to a '0-Point Equilibrium' state.
+
+[Phase 1 & 2: Classical Euclidean Constraints and Singularity Formation]
+- Visualized as: Red, chaotic, and expanding trajectories erupting within 
+  the Torus Model.
+- Physical Meaning: Before the TZT engine is activated, the unforced non-linear 
+  vortex stretching inevitably leads to finite-time singularities, exhibiting 
+  behavior characteristic of unbounded Euclidean space (R^3). The kinetic energy 
+  exhibits unbounded growth, representing the analytical limitations of classical 
+  fluid dynamics where extreme turbulence cannot be globally bounded.
+
+[Phase 3: TZT Core Activation and 0-Point Equilibrium]
+- Visualized as: A phase transition indicated by a shift to Cyan, followed by 
+  a smooth, bounded toroidal circulation along the geometry of the Torus Model.
+- Physical Meaning: Upon the activation of the Topological Zero Tensor (TZT) 
+  and the 0-point metric operator, the divergent energy is no longer 
+  mechanically suppressed. Instead, it is topologically trivialized. The 
+  divergent trajectories are deflected into the null space and safely routed 
+  into the stable 3D torus manifold (T^3). 
+
+[Conclusion]
+The system achieves absolute geometric closure. The energy does not undergo 
+finite-time blow-up nor artificial dissipation; it is harmoniously preserved 
+in an eternal 0-point equilibrium within the Torus Model. This visual hologram 
+is the direct physical manifestation of the analytic closure and enstrophy 
+dissipation inequality rigorously verified in the accompanying Lean 4 and 
+CAS proof files.
+
+* Note: This video is a conceptual visualization. For the strict mechanized 
+proofs and numerical validation (DNS), please refer to Supplementary Files 2, 
+3, and 4.
+=============================================================================
