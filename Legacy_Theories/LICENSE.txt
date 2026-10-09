@@ -1,0 +1,71 @@
+===============================================
+||
+||    ARK PROJECT UNIFIED LICENSE (TOPOLOGICAL COMPLIANCE)
+||
+===============================================
+
+Version: 1.0
+Year: 2026
+Author: Jung Soo Kim / ORCID: 0009-0006-5140-0604
+Commercial License Inquiry: https://naver.me/5OlzNQ7Q
+
+This license is the unified governing protocol for the Ark Project ecosystem and all related intellectual, physical, and technical assets. The previously published 'H.U.G.G.E.R + TZT Framework', as well as the 'Grand Unified Framework (Sigma-Zero Axiom System)' and all related mathematical and physical engines to be published in the future, are subject to this Unified License. This license is based on the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) standard (https://creativecommons.org/licenses/by-nc/4.0/), and strictly enforces the following additional compliance provisions to maintain macroscopic equilibrium of the system.
+
+[Part 1: Freedom for Research and Academic Use]
+* The Ark Project and its foundational Sigma-Zero axiom system are geometric and physical legacies published for the advancement of academic research.
+* Under the CC BY-NC 4.0 terms, researchers, academic institutions, and students worldwide may freely use, study, share, and modify this framework for non-commercial, academic, and educational purposes.
+* The original author encourages the global scientific community to utilize these topological mechanisms to explore Zero-Point equilibrium and advance research on the stability of fluid dynamics and macroscopic physical systems.
+
+[Part 2: Restriction on Commercial Use and Prevention of Non-reversible Structural Degradation]
+* Restriction on Commercial Use: Integrating this framework into the commercial aerospace industry, for-profit computational fluid dynamics (CFD) software, or any proprietary technology for corporate profit is not permitted.
+* Commercial Licensing: Any entity wishing to utilize this framework for commercial purposes must explicitly obtain a separate commercial license in advance through consultation with the original author (Jung Soo Kim).
+* Maintenance of Geometric Integrity: All applied technologies based on this framework shall not be used for Non-reversible Structural Degradation applications that compromise the geometric integrity of the system.
+* Limitation of Purpose: The macroscopic fluid, thermodynamic, and topological mechanisms within this theory must only be utilized for stable, non-profit purposes that maintain the macroscopic equilibrium of the system and prevent structural collapse.
+* Prevention of Critical Exceedance: Applying these axioms to mechanical devices and systems designed to induce loss of physical integrity, massive thermodynamic instability, or local critical state exceedance of the system is restricted.
+* Inheritance of Restrictions: All derived research, simulation codes, and secondary works based on this framework must identically inherit and apply the non-commercial regulations and the 'prevention of non-reversible structural degradation' provisions specified in this license. Upon violation of these regulations, the license rights will be automatically revoked, and all resulting legal liabilities shall be borne by the violating party.
+
+[Part 3: Academic Citation and Topological Integrity of Derived Research]
+* When conducting secondary research based on this Sigma-Zero axiom system and Zero-Point equilibrium mechanism, the original author (Jung Soo Kim) must be explicitly cited as the Primary Citation in accordance with research ethics and the provisions of this license.
+* The foundational axiom system that converges energy to the Zero-Point without loss of integrity is exclusively attributed to the original author.
+* Derived research that borrows the framework or arbitrarily substitutes external parameters without explicit citation of the original author will be officially regarded as an incomplete physical model that has lost the topological integrity of the original system.
+
+[Part 4: Legal Disclaimer and Limitation of Liability]
+* ALL CONCEPTS RELATED TO THIS FRAMEWORK ARE PROVIDED 'AS-IS', WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES OF ANY KIND.
+* THE ORIGINAL AUTHOR (JUNG SOO KIM) ASSUMES NO LIABILITY OR RESPONSIBILITY FOR ANY PHYSICAL, FINANCIAL, OR LEGAL DAMAGES ARISING FROM THE USE, MISUSE, OR MISINTERPRETATION OF THIS FRAMEWORK.
+
+-----------------------------------------------------------------
+
+===============================================
+||
+||         아크 프로젝트 통합 라이선스 (위상학적 규정 준수판)
+||
+===============================================
+
+버전 (Version): 1.0
+발행 연도 (Year): 2026
+저자 (Author): 김정수 (Jung Soo Kim) / ORCID: 0009-0006-5140-0604
+상업용 라이선스 문의 (Commercial License Inquiry): https://naver.me/5OlzNQ7Q
+
+본 라이선스는 아크 프로젝트 생태계 및 관련 지적, 물리적, 기술적 자산에 적용되는 통합 규정입니다. 기 발표된 'H.U.G.G.E.R + TZT 프레임워크' 및 향후 발표될 '대통일 프레임워크(Sigma-Zero 공리계)'를 포함한 관련 수학·물리학적 엔진 전반은 본 통합 라이선스의 적용을 받습니다. 본 규정은 '크리에이티브 커먼즈 저작자표시-비영리 4.0 국제(CC BY-NC 4.0)' 규격(https://creativecommons.org/licenses/by-nc/4.0/)을 기반으로 하며, 시스템의 거시적 평형 유지를 위해 다음의 추가 준수 조항을 명시합니다.
+
+[제1부: 연구 및 학술 목적의 이용]
+* 아크 프로젝트와 Sigma-Zero 공리계는 학술적 연구 및 발전을 목적으로 공개된 기하학적·물리적 체계입니다.
+* 전 세계의 연구자, 학술 기관 및 학생은 CC BY-NC 4.0 조건에 따라 비상업적, 학술적, 교육적 목적으로 본 프레임워크를 자유롭게 이용, 연구, 공유 및 변형할 수 있습니다.
+* 원저작자는 학계가 본 위상수학적 메커니즘을 통해 제로 포인트(Zero-Point) 평형을 탐구하고, 유체 동역학 및 거시 물리 시스템의 안정성 연구에 기여할 것을 권장합니다.
+
+[제2부: 상업적 이용 제한 및 비가역적 구조 훼손 방지]
+* 상업적 이용 제한: 본 프레임워크를 상업적 항공우주 산업, 영리 목적의 전산유체역학(CFD) 소프트웨어 개발, 기타 이윤 창출을 위한 기술 등에 통합하는 것은 허용되지 않습니다.
+* 상업적 허가 취득: 상업적 목적으로 본 프레임워크를 이용하고자 하는 경우, 사전에 원저작자(김정수)와 협의하여 별도의 상업용 라이선스를 명시적으로 발급받아야 합니다.
+* 기하학적 온전성 유지: 본 프레임워크에 기반한 응용 기술은 시스템의 기하학적 온전성을 저해하는 비가역적 구조 훼손(Non-reversible Structural Degradation) 응용에 사용될 수 없습니다.
+* 목적의 제한: 본 이론의 거시적 유체, 열역학, 위상수학적 메커니즘은 시스템의 거시적 평형을 유지하고 구조적 붕괴를 방지하는 비영리적이고 안정적인 목적으로만 활용되어야 합니다.
+* 시스템 임계 초과 통제: 물리적 온전성 상실, 대규모 열역학적 불안정성, 또는 시스템의 국소적 임계 상태 초과를 유발하도록 설계된 기계 장치나 시스템에 본 공리를 적용하는 것은 제한됩니다.
+* 규정 승계: 본 프레임워크를 기반으로 한 파생 연구, 시뮬레이션 코드 및 2차 저작물은 본 라이선스의 비상업적 조건 및 '비가역적 구조 훼손 방지' 규정을 동일하게 승계하여야 합니다. 규정 위반 시 라이선스 권리는 즉각적으로 소멸되며, 이로 인한 모든 법적 책임은 위반 주체에게 귀속됩니다.
+
+[제3부: 인용 요건 및 파생 연구의 위상학적 무결성]
+* 본 Sigma-Zero 공리계 및 제로 포인트 평형 기제를 기반으로 2차 연구를 수행하는 경우, 연구 윤리 및 본 라이선스 규정에 따라 원저작자(Jung Soo Kim)를 주요 출처(Primary Citation)로 명시하여야 합니다.
+* 에너지를 온전성 상실 없이 제로 포인트로 수렴시키는 근본 공리계에 대한 권리는 원저작자에게 있습니다.
+* 명시적 인용 없이 본 프레임워크를 차용하거나 외부 파라미터를 임의 대입한 파생 연구는, 원본 시스템의 위상학적 무결성을 상실한 불완전 모델로 공식 간주됩니다.
+
+[제4부: 면책 조항]
+* 본 프레임워크의 모든 정보는 '있는 그대로(As-is)' 제공되며, 어떠한 명시적 또는 묵시적 보증도 포함하지 않습니다.
+* 원저작자(김정수)는 본 프레임워크의 이용, 오용 또는 해석상 오류로 인해 발생하는 어떠한 물리적, 재산적, 법적 손해에 대해서도 책임을 부담하지 않습니다.
