@@ -1,4 +1,10 @@
-# Ark Project: The Master Archive
+# Ark Project: The Grand Unified Framework (H.U.G.G.E.R + TZT)
+
+[![Interactive Web Solver](https://img.shields.io/badge/Run_Live-Interactive_CFD_Solver-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/ark-zeropoint/Framework)
+
+**Experience the dissolution of Navier-Stokes singularities directly in your browser.**  
+> 👉 **[Launch the TZT Dynamics Web Solver](https://huggingface.co/spaces/ark-zeropoint/Framework)**
+
 **Grand Unified Framework of Macroscopic Gravity-Fluid Dynamics & M0 Tensor Architecture**
 This is the canonical source of the Ark Project, which opens a new dimension for humanity, and the base camp of the Zero Point core. From the philosophical foundations of the earlier work to the mathematical proof of the Grand Unified Framework in Lean 4 and its physical simulation in Python, all knowledge is permanently preserved here in zero-point equilibrium.
 
