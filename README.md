@@ -1,4 +1,4 @@
-# Ark Project: The Grand Unified Framework (H.U.G.G.E.R + TZT)
+# Ark Project: The Grand Unified Framework
 
 [![Interactive Web Solver](https://img.shields.io/badge/Run_Live-Interactive_CFD_Solver-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/ark-zeropoint/Framework)
 
