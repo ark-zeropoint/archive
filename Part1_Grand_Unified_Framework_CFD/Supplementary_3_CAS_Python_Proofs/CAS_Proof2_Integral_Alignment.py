@@ -1,306 +1,209 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 Jung Soo Kim (Ark Project).
-# SPDX-License-Identifier: CC-BY-NC-4.0
-# This code is part of the H.U.G.G.E.R + TZT Grand Unified Framework.
-# See the README.md file in the root directory for full license details.
-
 """
-File: CAS_Proof2_Integral_Alignment.py
-Proof 2: Integral Alignment (H2) — H.U.G.G.E.R / TZT Framework
+Copyright (c) 2026 Jung Soo Kim (Ark Project).
+SPDX-License-Identifier: CC-BY-NC-4.0
+This code is part of the H.U.G.G.E.R + TZT Grand Unified Framework.
+See the README.md file in the root directory for full license details.
 
-Question: does Z_ij ≡ 0 force
-    X ⌟ Strain(ω) = 0
-and therefore
-    R = (1/4) X × (∇×ω)   ?
+CAS_Proof2_Integral_Alignment.py  --  Proof 2: Integral Alignment (H2), v3 (localized core)
 
-Answer the CAS will print:
-  - pointwise H2 is NOT an identity from Z ≡ 0 alone
-  - the INTEGRAL identity
-        ∫ ⟨ω, R⟩ = (1/2) ∫ ω · G0_sym ω
-    IS forced by Z ≡ 0 + div ω = 0 + T³ (no boundary)
-  - 0-point core G0_sym = λ g on T³ forces λ = 0
-        ⇒ ∫ ⟨ω, R⟩ = 0
-  - pointwise H2 becomes a theorem only after three extra
-    constitutive locks (axis frame, axial invariance, no fibre shear)
+Lean 4 counterpart: Supplementary_2_Formal_Verification_Lean4/Theorem2_Integral_Alignment.lean
+
+Question: does Z == 0 force  X _| S(omega) = 0, so that the remainder R lives only in the
+curl channel?
+
+v3 synchronisation with Lean
+  * Lean conventions: (grad w)_ij = d_j w_i, curl = axial(grad).  The remainder of the
+    stretching split is  R_i = -1/2 X_j d_i omega_j  (CAS_Proof4, section 2.2).
+  * SIGN CORRECTION.  R = -1/2 S(omega) X - 1/4 X x (curl omega).  v1/v2 printed
+    "+1/4 X x (curl omega)"; their own code computed -1/4.  Section A now asserts the
+    correct sign.  (Lean v3 only uses R = 0 or |R|, so no Lean result depends on it.)
+  * The zero-point core holds only on K = CriticalRegion(Lambda).  Hence
+      - on int K: grad v is locally constant, curl omega = 0 and R = 0 pointwise
+        (Lean remainder_vanishes_on_core_interior, H2_on_core_interior);
+      - globally: int <omega, R> = 1/2 int_{T^3 \\ K} omega . S(v) omega, which is no
+        longer forced to vanish (v2's "= 0" needed the core on all of T^3).
+  * Every check below is an executed SymPy computation guarded by an assert.
 """
 
-from itertools import product
+from sympy import Function, Matrix, Rational, diff, expand, simplify, symbols
 
-from sympy import (
-    Function,
-    IndexedBase,
-    Matrix,
-    Symbol,
-    symbols,
-    simplify,
-    Rational,
-    LeviCivita,
-    Eq,
-    zeros,
-)
-
-
-half = Rational(1, 2)
-quarter = Rational(1, 4)
-
+half, quarter = Rational(1, 2), Rational(1, 4)
 x, y, z = symbols("x y z", real=True)
 coords = (x, y, z)
 
-# Generic fields
-X1, X2, X3 = symbols("X_1 X_2 X_3", cls=Function)
-w1, w2, w3 = symbols("omega_1 omega_2 omega_3", cls=Function)
-X = Matrix([X1(x, y, z), X2(x, y, z), X3(x, y, z)])
-w = Matrix([w1(x, y, z), w2(x, y, z), w3(x, y, z)])
 
-
-def partial(comp, axis):
-    return comp.diff(coords[axis])
-
-
-def grad_vec(v):
-    G = zeros(3)
-    for i, j in product(range(3), repeat=2):
-        G[i, j] = partial(v[j], i)  # (∇v)_ij = ∂_i v_j
-    return G
-
-
-def strain(v):
-    G = grad_vec(v)
-    return half * (G + G.T)
-
-
-def skew(v):
-    G = grad_vec(v)
-    return half * (G - G.T)
-
-
-def curl(v):
-    return Matrix(
-        [
-            partial(v[2], 1) - partial(v[1], 2),
-            partial(v[0], 2) - partial(v[2], 0),
-            partial(v[1], 0) - partial(v[0], 1),
-        ]
-    )
-
-
+# --------------------------------------------------------------------------- helpers
 def header(t):
     print("\n" + "=" * 72)
     print(t)
     print("=" * 72)
 
 
+def is_zero(e):
+    if hasattr(e, "shape"):
+        return all(simplify(expand(c)) == 0 for c in e)
+    return simplify(expand(e)) == 0
+
+
+def check(label, ok):
+    if not bool(ok):
+        raise AssertionError(f"[FAIL] {label}")
+    print(f"  [PASS] {label}")
+
+
+def jac(v):
+    """Lean `grad`: (grad v)_ij = d_j v_i."""
+    return Matrix(3, 3, lambda i, j: diff(v[i], coords[j]))
+
+
+def sym(A):
+    return half * (A + A.T)
+
+
+def skw(A):
+    return half * (A - A.T)
+
+
+def axial(A):
+    return Matrix([A[2, 1] - A[1, 2], A[0, 2] - A[2, 0], A[1, 0] - A[0, 1]])
+
+
+def curl(v):
+    return axial(jac(v))
+
+
+def div(v):
+    return jac(v).trace()
+
+
+def vdot(a, b):
+    return (a.T * b)[0]
+
+
+def nsq(a):
+    return expand(vdot(a, a))
+
+
+def remainder(X, w):
+    """R_i = -1/2 sum_j X_j d_i w_j  =  -1/2 (grad w)^T X."""
+    return -half * jac(w).T * X
+
+
+X = Matrix([Function(f"X_{i}")(x, y, z) for i in (1, 2, 3)])
+w = Matrix([Function(f"omega_{i}")(x, y, z) for i in (1, 2, 3)])
+
+
+# --------------------------------------------------------------------------- A
 def section_identity_split():
-    header("A. Exact component split of R  (no hypothesis)")
-    # R_i = -1/2 X_j ∂_i ω_j
-    R = zeros(3, 1)
-    for i in range(3):
-        s = 0
-        for j in range(3):
-            s += -half * X[j] * partial(w[j], i)
-        R[i] = s
-
-    Sw = strain(w)
-    Ow = skew(w)
-    R_sym = zeros(3, 1)
-    R_skw = zeros(3, 1)
-    for i in range(3):
-        acc_s = 0
-        acc_k = 0
-        for j in range(3):
-            acc_s += -half * X[j] * Sw[i, j] * 2 / 1
-            # X_j ∂_i ω_j = X_j (S_ij + Ω_ij) with S_ij = S_ji = ½(∂i wj + ∂j wi)
-            # ∂_i ω_j = (∇ω)_{ij}
-            pass
-        R_sym[i] = sum(-half * X[j] * (partial(w[j], i) + partial(w[i], j)) * half * 2 for j in range(3))
-        # simpler: ∂_i ω_j = S_ij + Ω_ij, S = strain, Ω = skew of ω
-        R_sym[i] = sum(-half * X[j] * Sw[i, j] for j in range(3)) * 1
-        # Wait Sw[i,j] = ½(∂i wj + ∂j wi). And ∂_i ω_j = Sw[i,j] + Ow[i,j]
-        R_sym[i] = sum(-half * X[j] * Sw[i, j] for j in range(3))
-        R_skw[i] = sum(-half * X[j] * Ow[i, j] for j in range(3))
-
-    # Recompute cleanly
-    Gw = grad_vec(w)  # Gw[i,j] = ∂_i w_j
-    R2 = zeros(3, 1)
-    Rs = zeros(3, 1)
-    Rk = zeros(3, 1)
-    for i in range(3):
-        R2[i] = sum(-half * X[j] * Gw[i, j] for j in range(3))
-        Rs[i] = sum(-half * X[j] * Sw[i, j] for j in range(3))
-        Rk[i] = sum(-half * X[j] * Ow[i, j] for j in range(3))
-
-    print("R_i = -½ X_j ∂_i ω_j")
-    print("R   = R_sym + R_skew")
-    print("difference R - (R_sym+R_skew) =")
-    print(simplify(R2 - Rs - Rk))
-
-    # curl channel: (1/4) X × curl ω
-    # Ow[i,j] = ½(∂i wj - ∂j wi) = -½ ε_ijk (curl ω)_k
-    # -½ X_j Ow[i,j] should equal (1/4)(X × curl ω)_i
-    cx = Rational(1, 4) * X.cross(curl(w))
-    print("\nR_skew  vs  (1/4) X × (∇×ω)")
-    print(simplify(Rk - cx))
-    print("LOCK A:  R = -½ X⌟S^(ω)  +  (1/4) X×(∇×ω)")
-    print("H2 is exactly the vanishing of the first summand.")
-    return R2, Rs, Rk, cx
+    header("A. Exact split of R (no hypothesis)")
+    Jw = jac(w)
+    R = remainder(X, w)
+    Rs = -half * sym(Jw) * X                    # -1/2 X _| S(omega)
+    Rk = half * skw(Jw) * X                     # skew part:  -1/2 (Omega^T) X = +1/2 Omega X
+    c = curl(w)
+    check("R = R_sym + R_skew", is_zero(R - Rs - Rk))
+    check("R_sym = -1/2 S(omega) X", is_zero(Rs + half * sym(Jw) * X))
+    check("R_skew = -1/4 X x (curl omega)   (= +1/4 (curl omega) x X)",
+          is_zero(Rk + quarter * X.cross(c)))
+    check("v1/v2 sign '+1/4 X x curl omega' is NOT an identity (difference = -1/2 X x curl omega)",
+          not is_zero(Rk - quarter * X.cross(c)) and is_zero((Rk - quarter * X.cross(c))
+                                                             + half * X.cross(c)))
+    print("  LOCK A: R = -1/2 X _| S(omega) - 1/4 X x (curl omega);  H2 = vanishing of the first term.")
 
 
+# --------------------------------------------------------------------------- B
 def section_Z_does_not_kill_H2():
-    header("B. Counter-component: Z ≡ 0 does not force H2")
-    print(
-        """
-Z_ij = S^X_ij + Ω^O_ij - G0_ij ≡ 0
-constrains (X, O, G0).  It does not constrain Strain(ω).
-
-Component counter-example on T³:
-  X = (M, 0, 0)   constant   (so S^X = 0, X Killing)
-  ω = (0, 0, f(x))
-  S^(ω)_13 = S^(ω)_31 = (1/2) f'(x)
-  (X ⌟ S^(ω))_3 = (M/2) f'(x)   which is ≠ 0 unless f' = 0.
-
-One can still choose O, G0 so that Z ≡ 0
-(e.g. O = 0, G0 = 0, X Killing).  H2 already fails.
-"""
-    )
-    print("LOCK B: H2 is not a corollary of Z ≡ 0 alone.")
+    header("B. Counterexample: Z == 0 does not force H2")
+    M = symbols("M", real=True, nonzero=True)
+    f = Function("f")
+    Xc = Matrix([M, 0, 0])                      # constant: S(X) = 0, Killing
+    wc = Matrix([0, 0, f(x)])
+    check("S(X) = 0 for constant X (so Z == 0 holds with O = G0 = 0)", is_zero(sym(jac(Xc))))
+    check("div omega = 0", is_zero(div(wc)))
+    pair = sym(jac(wc)) * Xc
+    check("(X _| S(omega))_3 = (M/2) f'(x), not identically 0",
+          is_zero(pair - Matrix([0, 0, M * diff(f(x), x) / 2])))
+    print("  LOCK B: H2 is not a corollary of Z == 0 alone.")
 
 
+# --------------------------------------------------------------------------- C
 def section_integral_theorem():
-    header("C. THE inevitable theorem from Z ≡ 0  (integral H2)")
-    print(
-        r"""
-R_i = -½ X_j ∂_i ω_j
-⟨ω, R⟩ = -½ X_j ω_i ∂_i ω_j
-        = -½ X · ((ω·∇)ω)
+    header("C. Integral identity and its v3 localization")
+    R = remainder(X, w)
+    SX = sym(jac(X))
+    Xw = vdot(X, w)
+    lhs = vdot(w, R)
+    rhs = (-half * div(Xw * w) + half * Xw * div(w) + half * vdot(w, SX * w))
+    check("<omega,R> = -1/2 div((X.omega) omega) + 1/2 (X.omega) div(omega) + 1/2 omega.S(X)omega",
+          is_zero(lhs - rhs))
+    print("  On T^3 the divergence integrates to 0 and div omega = 0, hence")
+    print("      int <omega, R> = 1/2 int omega . S(X) omega,   with S(X) = S(v)  (H1).")
 
-div ω = 0  ⇒  ∫ (ω·∇) φ = 0 on T³.
-
-Identity:
-  X · ((ω·∇)ω)
-    = (ω·∇)(X·ω) - ω_i ω_j ∂_i X_j
-    = (ω·∇)(X·ω) - ω · S^X ω     (ω · Ω^X ω = 0)
-
-∫ ⟨ω, R⟩ = -½ ∫ (ω·∇)(X·ω) + ½ ∫ ω · S^X ω
-         = ½ ∫ ω · S^X ω
-
-Z ≡ 0  ⇒  S^X = G0_sym          (ω · Ω^O ω = 0)
-∫ ⟨ω, R⟩ = ½ ∫ ω · G0_sym ω
-
-0-point core (no residual shear):  G0_sym = λ g
-∫ ⟨ω, R⟩ = (λ/2) ∫ |ω|²
-
-Flat closed T³ admits no nontrivial homothety ⇒ λ = 0
-∫ ⟨ω, R⟩ = 0
-
-This is the theorem that Z ≡ 0 + 0-point core actually forces.
-It is an INTEGRAL alignment, not the pointwise H2.
-"""
-    )
-    print("LOCK C:  ∫ ⟨ω,R⟩ = (λ/2)∫|ω|²  and on T³, λ=0 ⇒ ∫⟨ω,R⟩=0")
+    # v3 localization: chi = indicator of the core region K (1 on K, 0 elsewhere)
+    chi = symbols("chi", real=True)
+    Sv = symbols("S11 S12 S13 S22 S23 S33", real=True)
+    S = Matrix([[Sv[0], Sv[1], Sv[2]], [Sv[1], Sv[3], Sv[4]], [Sv[2], Sv[4], Sv[5]]])
+    om = Matrix(symbols("o1 o2 o3", real=True))
+    dens = half * vdot(om, (1 - chi) * S * om)  # S(v) = 0 where chi = 1 (Lean strain_vanishes_on_core)
+    check("core points (chi = 1): integrand 1/2 omega.S(v)omega = 0",
+          is_zero(dens.subs(chi, 1)))
+    check("classical points (chi = 0): integrand = 1/2 omega.S(v)omega, unconstrained",
+          is_zero(dens.subs(chi, 0) - half * vdot(om, S * om)) and not is_zero(dens.subs(chi, 0)))
+    print("  => int <omega,R> = 1/2 int_{T^3 \\ K} omega . S(v) omega : only the classical region")
+    print("     contributes, and nothing forces it to vanish.  v2's 'int <omega,R> = 0' required")
+    print("     the core on all of T^3 (K = T^3), which admits only rigid motions.")
+    print("  LOCK C: integral H2 holds on the core; globally it is NOT forced under localization.")
 
 
+# --------------------------------------------------------------------------- D
 def section_pointwise_under_locks():
-    header("D. Pointwise H2 as a theorem under three constitutive locks")
-    print(
-        """
-Lock D1  0-point frame: X = (M, 0, 0),  M constant.
-         (axis of the active intake; translations on T³ are Killing)
-Lock D2  toroidal / axial vorticity: ω = (w(y,z), 0, 0)
-         (right-hand: circulation in the 2–3 fibre ⇒ vorticity ∥ axis)
-         AND no axial gradient: ∂_x w = 0   (already in w(y,z))
-Lock D3  fibre-homogeneity of |ω|:  ∂_y w = 0 and ∂_z w = 0
-         i.e. w = const.
-
-Then S^(ω) = 0 and X ⌟ S^(ω) = 0, so H2 holds
-and R = (1/4) X × (∇×ω).
-
-WARNING: D3 forces ω spatially constant.  That is too rigid
-for a genuine turbulent field.  Therefore the PAPER-GRADE
-promotion is Lock C (integral), not D3.
-
-A usable middle lock D3' (weaker):
-  only demand the enstrophy pairing
-      ω_i X_j S^(ω)_ij = 0
-  which follows from C with λ = 0 without freezing ω.
-"""
-    )
-
+    header("D. Pointwise H2 under the three constitutive locks")
     M = symbols("M", real=True, positive=True)
-    w = Function("w")
-    # D1+D2 without D3
-    Xloc = Matrix([M, 0, 0])
-    wloc = Matrix([w(y, z), 0, 0])
-    Sw = zeros(3)
-    for i, j in product(range(3), repeat=2):
-        Sw[i, j] = half * (wloc[j].diff(coords[i]) + wloc[i].diff(coords[j]))
-    contraction = zeros(3, 1)
-    for i in range(3):
-        contraction[i] = sum(Xloc[j] * Sw[j, i] for j in range(3))
-    print("D1+D2 only,  X ⌟ S^(ω) =")
-    print(simplify(contraction))
-    print("= (0, (M/2) ∂_y w, (M/2) ∂_z w)   ≠ 0 unless D3")
-    print()
-    # with D3
-    wc = symbols("w_const", real=True)
-    wconst = Matrix([wc, 0, 0])
-    Swc = zeros(3)
-    for i, j in product(range(3), repeat=2):
-        Swc[i, j] = half * (wconst[j].diff(coords[i]) + wconst[i].diff(coords[j]))
-    contrc = zeros(3, 1)
-    for i in range(3):
-        contrc[i] = sum(Xloc[j] * Swc[j, i] for j in range(3))
-    print("D1+D2+D3,  X ⌟ S^(ω) =")
-    print(simplify(contrc))
-    print("LOCK D: pointwise H2 ⇔ D1+D2+D3 (too rigid) or the pairing form D3'.")
+    W = Function("w")
+    Xl = Matrix([M, 0, 0])                                       # D1: 0-point frame
+    wl = Matrix([W(y, z), 0, 0])                                 # D2: axial vorticity
+    pair = sym(jac(wl)) * Xl
+    check("D1+D2: X _| S(omega) = (0, (M/2) d_y w, (M/2) d_z w)",
+          is_zero(pair - Matrix([0, M * diff(W(y, z), y) / 2, M * diff(W(y, z), z) / 2])))
+    wc = symbols("w_c", real=True)
+    check("D1+D2+D3 (w constant): X _| S(omega) = 0",
+          is_zero(sym(jac(Matrix([wc, 0, 0]))) * Xl))
+    print("  LOCK D: pointwise H2 <=> D1+D2+D3 (too rigid: omega constant).")
 
 
-def section_pairing_theorem():
-    header("E. Paper-grade H2  (pairing form, theorem)")
-    print(
-        """
-Define
-  H2_pair  :   ω_i X_j S^(ω)_ij  =  0     (scalar, not vector)
-
-From section C, on T³ with G0_sym = 0:
-  ∫ ω_i X_j S^(ω)_ij   is the same channel as ∫ ⟨ω,R⟩
-  and equals 0.
-
-Pointwise H2_pair is still not free.  What IS a theorem:
-
-  theorem H2_integral
-      (hZ : Z = 0)
-      (hCore : G0_sym = λ • g)
-      (hT3 : no nontrivial homothety)
-      : ∫ ⟨ω, R⟩ = 0
-
-  theorem remainder_energy
-      : ∫ ⟨ω, stretching⟩ = ∫ ⟨ω, R⟩ = 0
-        after the flux Π evaporates on T³.
-
-Viscous absorption then does not even need the pointwise
-formula R = (1/4) X×curl ω.  It needs only
-
-  |∫ ⟨ω,R⟩| ≤ ε ‖ω‖₂² + Cε ‖curl ω‖₂²
-
-and the left side is 0 under H2_integral, which is stronger:
-the production vanishes and viscosity only fights the
-linear transport that already integrates to zero.
-"""
-    )
-    print("LOCK E: promote H2_integral, not pointwise H2.")
+# --------------------------------------------------------------------------- E
+def section_localized_pointwise():
+    header("E. v3: pointwise H2 on the interior of the core")
+    print("  On an open core set S(v) = 0, so grad v is locally constant (Lean grad_eventually_const):")
+    print("  locally v = a + B x with B skew (a rigid motion).")
+    a = Matrix(symbols("a1 a2 a3", real=True))
+    b1, b2, b3 = symbols("b1 b2 b3", real=True)
+    B = Matrix([[0, -b3, b2], [b3, 0, -b1], [-b2, b1, 0]])
+    v = a + B * Matrix(coords)
+    om = curl(v)
+    check("S(v) = 0 for the rigid motion", is_zero(sym(jac(v))))
+    check("omega = 2 (b1, b2, b3) is constant", is_zero(om - 2 * Matrix([b1, b2, b3])))
+    check("grad omega = 0, hence curl omega = 0 and S(omega) = 0", is_zero(jac(om)))
+    check("R = 0 for every intake axis X  =>  <omega, R> = 0 on int K", is_zero(remainder(X, om)))
+    print("  [Lean: remainder_vanishes_on_core_interior, H2_on_core_interior]")
+    print("  LOCK E: H2 holds pointwise on int CriticalRegion; outside, no alignment is claimed.")
 
 
 def main():
-    print("H.U.G.G.E.R CAS — Proof 2: Integral Alignment (H2)")
+    print("H.U.G.G.E.R CAS -- Proof 2: Integral Alignment (H2)  [v3, localized core]")
     section_identity_split()
     section_Z_does_not_kill_H2()
     section_integral_theorem()
     section_pointwise_under_locks()
-    section_pairing_theorem()
+    section_localized_pointwise()
     header("STATUS")
-    print("Pointwise H2 (vector) : NOT forced by Z ≡ 0.")
-    print("Integral H2           : FORCED by Z ≡ 0 + 0-point core on T³.")
-    print("Lean action           : axiom H2_align  →  theorem H2_integral")
+    print("  Remainder split                 : R = -1/2 X_|S(omega) - 1/4 X x curl omega (sign corrected)")
+    print("  Pointwise H2 (vector)           : NOT forced by Z == 0 (LOCK B)")
+    print("  H2 on int CriticalRegion        : THEOREM, R = 0 [Lean H2_on_core_interior]")
+    print("  Integral H2 on all of T^3       : NOT forced under localization; v2 form = global core")
+    print("  Lean action                     : H2_integral (global) -> H2_on_core_interior (local)")
+    print("  All checks above passed (assert-guarded).")
 
 
 if __name__ == "__main__":
