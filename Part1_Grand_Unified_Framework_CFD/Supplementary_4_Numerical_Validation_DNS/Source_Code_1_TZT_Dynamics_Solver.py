@@ -1,287 +1,421 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Copyright (c) 2026 Jung Soo Kim (Ark Project).
-# SPDX-License-Identifier: CC-BY-NC-4.0
-# This code is part of the H.U.G.G.E.R + TZT Grand Unified Framework.
-# See the README.md file in the root directory for full license details.
-
 """
-Source_Code_1_TZT_Dynamics_Solver.py  --  Taylor-Green vortex on T^3=(2*pi)^3
-Standard NS / Euler   vs.   the user-specified "TZT-modified" dynamics
+Copyright (c) 2026 Jung Soo Kim (Ark Project).
+SPDX-License-Identifier: CC-BY-NC-4.0
+This code is part of the H.U.G.G.E.R + TZT Grand Unified Framework.
+See the README.md file in the root directory for full license details.
 
-    d_t u + (u.grad)u = -grad p + nu Lap u + F_TZT
-    F_TZT = div(X (x) u) - curl(O . w)      convention: (div T)_j = d_i T_ij,  T_ij = X_i u_j
-    X_i   = -C_X (d_i|w|^2) / ( |grad|w|^2| + delta_m )   [Projected via Helmholtz: div X = 0]
-    O_ij  =  C_O  w_i w_j /(|w|^2 + eps) * nu_turb,   nu_turb = (C_s*Delta)^2 sqrt(2 S_ij S_ij)  (static Smagorinsky)
+Source_Code_1_TZT_Dynamics_Solver.py  --  v3 (localized TZT activation, "Fractal Valve")
 
-modes:  base : F = 0
-        smag : F = div(2 nu_turb S)          (ordinary Smagorinsky closure -- control experiment)
-        tzt  : F = F_TZT
-Convention G[i,j] = d_j f_i.  Rotational form, 2/3 dealiasing, classical RK4, single precision of nothing (float64).
-Budgets are evaluated in spectral space at every step:
-   dE/dt    = -nu<|w|^2> + P_A + P_O            (P_* = <u.F_*>)
-   d zeta/dt =  P_S - nu<|grad w|^2> + Q_A + Q_O  (zeta=<|w|^2>/2, P_S=<w.S.w>, Q_* = <w.curl F_*> = <F_*.curl w>)
+Pseudo-spectral solver for the Taylor-Green vortex on T^3 = (0, 2 pi)^3: float64, Fourier
+derivatives, 2/3 dealiasing, Leray projection, classical RK4.
+
+Modes (--mode)
+  base : incompressible Navier-Stokes / Euler, no extra forcing
+  smag : static Smagorinsky closure (control experiment), applied everywhere
+  tzt  : TZT forcing  F = div(X (x) u) - curl(O . omega)
+           X   = P[ -C_X grad|omega|^2 / (|grad|omega|^2| + delta_m) ]   (solenoidal, so
+                 div(X (x) u) = (X . grad) u)
+           O.omega = C_O nu_t |omega|^2/(|omega|^2 + eps) omega,
+           nu_t = (C_s Delta)^2 sqrt(2 S:S),  Delta = 2 pi / N
+
+v3 -- synchronized with Lean 4 v3 (Supplementary_2: Theorem0, 1, 5, 6)
+  The TZT forcing is no longer applied on the whole domain.  It is multiplied by the
+  Fractal Valve chi(x) in [0, 1], supported in the critical region K:
+      --valve omega  : K = {x : |omega(x)|^2 > Lambda^2}      (= Lean `CriticalRegion Lambda`)
+      --valve strain : K = {x : |S(x)|^2 > Lambda_S^2},  |S| = sqrt(2 S_ij S_ij)
+      --valve either : union of the two
+      --valve global : K = T^3 (v2 behaviour, for comparison only)
+  chi is the sharp indicator of K (--valve_width 0, default), or a C^1 ramp that is 0 for
+  |q| <= Lambda and 1 for |q| >= (1 + w) Lambda, so supp chi is inside K in every case.
+  Outside K the forcing is exactly zero, so the momentum equation there is classical
+  Navier-Stokes / Euler; the pressure, as in any incompressible flow, stays global.
+  Because chi F is no longer solenoidal, both forcing pieces are Leray-projected.
+  Thresholds: Lambda = --Lambda if given (>= 0), else --Lambda_rel * max|omega(t=0)|;
+              Lambda_S = --LambdaS if given (>= 0), else --Lambda_rel * max|S(t=0)|.
+
+  Reading the diagnostics against Lean.  Lean `vorticity_ceiling` says: a state that
+  satisfies the localized postulate (S(v) = 0 on a core containing CriticalRegion Lambda)
+  has |omega| <= Lambda.  This solver does not impose that postulate as a constraint; it
+  applies the TZT forcing on K.  Whether a simulated flow stays below Lambda is therefore an
+  output of the run (wmax/Lambda, crit_frac), and core_res measures how far the flow is from
+  the postulate S(v) = 0 on the active region.
+
+Other v3 changes: divXmax is measured (v2 stored 0.0); the series gains the columns
+valve_frac and core_res; the JSON gains version, Lambda, LambdaS, wmax0, Smax0.
 """
-import numpy as np, scipy.fft as sf, json, time, argparse, sys
+
+import argparse
+import json
+import time
+
+import numpy as np
+import scipy.fft as sf
 from numpy import pi
 
-ap = argparse.ArgumentParser()
-ap.add_argument("--N", type=int, default=64)
-ap.add_argument("--nu", type=float, default=0.0)
-ap.add_argument("--dt", type=float, default=0.025)
-ap.add_argument("--T", type=float, default=6.0)
+ap = argparse.ArgumentParser(description="Taylor-Green dynamics: NS/Euler vs TZT (v3, localized)")
+ap.add_argument("--N", type=int, default=64, help="grid points per direction")
+ap.add_argument("--nu", type=float, default=0.0, help="kinematic viscosity")
+ap.add_argument("--dt", type=float, default=0.025, help="time step")
+ap.add_argument("--T", type=float, default=6.0, help="end time")
 ap.add_argument("--mode", choices=["base", "smag", "tzt"], default="base")
-ap.add_argument("--CX", type=float, default=0.0)      # LENGTH scale [L]  (|X| <= C_X |w|)
-ap.add_argument("--CO", type=float, default=0.0)      # dimensionless
-ap.add_argument("--dm", type=float, default=1.0)      # delta_m  [|grad|w|^2|] = 1/(T^2 L)
-ap.add_argument("--eps", type=float, default=1e-2)    # epsilon  [|w|^2]       = 1/T^2
-ap.add_argument("--Cs", type=float, default=0.17)     # static Smagorinsky constant
-ap.add_argument("--xconv", type=int, default=1)       # Legacy flag (overridden by div X = 0)
-ap.add_argument("--diag_every", type=float, default=0.5)
-ap.add_argument("--out", default="")
-A = ap.parse_args()
+ap.add_argument("--CX", type=float, default=0.0, help="C_X (length scale of X)")
+ap.add_argument("--CO", type=float, default=0.0, help="C_O (dimensionless)")
+ap.add_argument("--dm", type=float, default=1.0, help="delta_m regulariser in X")
+ap.add_argument("--eps", type=float, default=1e-2, help="epsilon regulariser in O")
+ap.add_argument("--Cs", type=float, default=0.17, help="Smagorinsky constant C_s")
+ap.add_argument("--xconv", type=int, default=1, help="legacy flag (unused)")
+ap.add_argument("--diag_every", type=float, default=0.5, help="diagnostic interval in time")
+ap.add_argument("--out", type=str, default="", help="output path (default res_{mode}_N{N}.json)")
+# v3: Fractal Valve
+ap.add_argument("--valve", choices=["omega", "strain", "either", "global"], default="omega",
+                help="where the TZT forcing is active (default: Lean CriticalRegion on |omega|)")
+ap.add_argument("--Lambda", type=float, default=-1.0,
+                help="absolute |omega| threshold Lambda (< 0: use --Lambda_rel)")
+ap.add_argument("--LambdaS", type=float, default=-1.0,
+                help="absolute |S| threshold Lambda_S (< 0: use --Lambda_rel)")
+ap.add_argument("--Lambda_rel", type=float, default=1.0,
+                help="Lambda = Lambda_rel*max|omega(0)|, Lambda_S = Lambda_rel*max|S(0)|")
+ap.add_argument("--valve_width", type=float, default=0.0,
+                help="0: sharp indicator of K; w > 0: C^1 ramp from Lambda to (1+w)Lambda")
+args = ap.parse_args()
 
-N, NU, DT, TEND, MODE = A.N, A.nu, A.dt, A.T, A.mode
-CX, CO, DM, EPS, CS, XCONV = A.CX, A.CO, A.dm, A.eps, A.Cs, A.xconv
+# ----------------------------------------------------------------------------- grid
+N = args.N
 Nh = N // 2 + 1
 DELTA = 2 * pi / N
-
-x = np.arange(N) * 2 * pi / N
-X_, Y_, Z_ = np.meshgrid(x, x, x, indexing="ij")
-k1 = np.fft.fftfreq(N, 1.0 / N)
-kr = np.arange(Nh, dtype=float)
+xg = np.arange(N) * 2 * pi / N
+GX, GY, GZ = np.meshgrid(xg, xg, xg, indexing="ij")
+k1 = sf.fftfreq(N, 1.0 / N)
+kr = np.arange(Nh)
 KX, KY, KZ = np.meshgrid(k1, k1, kr, indexing="ij")
-K = np.stack([KX, KY, KZ])
-K2 = KX ** 2 + KY ** 2 + KZ ** 2
+K = np.array([KX, KY, KZ])
+K2 = KX**2 + KY**2 + KZ**2
 K2i = 1.0 / np.where(K2 == 0, 1.0, K2)
 kc = N / 3.0
-mask = (np.abs(KX) <= kc) & (np.abs(KY) <= kc) & (np.abs(KZ) <= kc)
-dmask = (np.abs(KX) < N / 2) & (np.abs(KY) < N / 2) & (np.abs(KZ) < N / 2)
-wgt = np.full((N, N, Nh), 2.0)
-wgt[:, :, 0] = 1.0
+mask = ((np.abs(KX) <= kc) & (np.abs(KY) <= kc) & (np.abs(KZ) <= kc)).astype(float)
+wgt = np.full(KZ.shape, 2.0)            # Parseval weights for the half spectrum
+wgt[..., 0] = 1.0
 if N % 2 == 0:
-    wgt[:, :, -1] = 1.0
+    wgt[..., N // 2] = 1.0
+KB = np.rint(np.sqrt(K2)).astype(int)   # shell index
+KMAX = N // 3
+
+LAM = 0.0                               # set from the initial condition below
+LAMS = 0.0
 
 
-def rfft(a):  return sf.rfftn(a, axes=(-3, -2, -1))
-def irfft(a): return sf.irfftn(a, s=(N, N, N), axes=(-3, -2, -1))
+# ----------------------------------------------------------------------------- spectral helpers
+def rfft(a):
+    return sf.rfftn(a, axes=(-3, -2, -1))
+
+
+def irfft(a):
+    return sf.irfftn(a, s=(N, N, N), axes=(-3, -2, -1))
 
 
 def curl_hat(uh):
-    return 1j * np.stack([KY * uh[2] - KZ * uh[1], KZ * uh[0] - KX * uh[2], KX * uh[1] - KY * uh[0]])
+    return np.array([1j * (KY * uh[2] - KZ * uh[1]),
+                     1j * (KZ * uh[0] - KX * uh[2]),
+                     1j * (KX * uh[1] - KY * uh[0])])
 
 
 def grad(fh):
-    G = np.empty((fh.shape[0], 3, N, N, N))
-    for j, Kj in enumerate((KX, KY, KZ)):
-        G[:, j] = irfft(1j * Kj * fh)
-    return G
+    """fh: (m, N, N, Nh) -> (m, 3, N, N, N), G[a, j] = d_j f_a (no dealiasing)."""
+    return np.array([[irfft(1j * K[j] * fh[a]) for j in range(3)] for a in range(fh.shape[0])])
 
 
 def proj(fh):
-    return fh - K * ((KX * fh[0] + KY * fh[1] + KZ * fh[2]) * K2i)
+    """Leray projection P f = f - k (k . f)/|k|^2."""
+    kdotf = KX * fh[0] + KY * fh[1] + KZ * fh[2]
+    return fh - K * (kdotf * K2i)
 
 
 def dot(a, b, wk=1.0):
-    return float(np.sum(wgt * wk * np.real(np.sum(np.conj(a) * b, axis=0))) / N ** 6)
+    """Grid-averaged inner product <a, b> from half-spectrum coefficients."""
+    return float(np.sum(wgt * wk * np.real(np.sum(np.conj(a) * b, axis=0)))) / N**6
 
 
-def energy(uh):    return 0.5 * dot(uh, uh, 1.0)
-def enstrophy(uh): return 0.5 * dot(uh, uh, K2)
-def visc_dest(uh): return NU * dot(uh, uh, K2 ** 2)
+def energy(uh):
+    return 0.5 * dot(uh, uh, 1.0)
 
 
-# ---------------------------------------------------------------------------------------------
+def enstrophy(uh):
+    return 0.5 * dot(uh, uh, K2)
+
+
+def visc_dest(uh):
+    """nu <|grad omega|^2> (enstrophy-budget viscous term), stored as 'Dnu'."""
+    return args.nu * dot(uh, uh, K2**2)
+
+
+def strain_of(gu):
+    return 0.5 * (gu + gu.transpose(1, 0, 2, 3, 4))
+
+
+# ----------------------------------------------------------------------------- v3: Fractal Valve
+def gate(q2, L, width):
+    """Valve on a squared magnitude q2 with threshold L >= 0.
+    width = 0 : sharp indicator of {q2 > L^2}   (Lean CriticalRegion: Lambda^2 < |omega|^2)
+    width > 0 : C^1 smoothstep in |q| from 0 at L to 1 at (1+width) L; identically 0 on
+                {|q| <= L}, so the support stays inside {q2 > L^2}."""
+    if width <= 0.0 or L <= 0.0:
+        return (q2 > L * L).astype(float)
+    s = np.clip((np.sqrt(q2) - L) / (width * L), 0.0, 1.0)
+    return s * s * (3.0 - 2.0 * s)
+
+
+def valve(w2, S2):
+    """chi(x) in [0, 1]; S2 = 2 S_ij S_ij."""
+    if args.valve == "global":
+        return np.ones_like(w2)
+    chi = np.zeros_like(w2)
+    if args.valve in ("omega", "either"):
+        chi = np.maximum(chi, gate(w2, LAM, args.valve_width))
+    if args.valve in ("strain", "either"):
+        chi = np.maximum(chi, gate(S2, LAMS, args.valve_width))
+    return chi
+
+
+def core_residual(chi, S2):
+    """sqrt(<2 S:S>_chi) / Lambda: distance from the Lean core condition S(v) = 0 on K."""
+    m = float(np.sum(chi))
+    if m <= 0.0 or LAM <= 0.0:
+        return 0.0
+    return float(np.sqrt(np.sum(chi * S2) / m) / LAM)
+
+
+# ----------------------------------------------------------------------------- forcing
 def forcing(uh, up, wp, gu, keep=None):
-    """Return (FA_h, FO_h, extras, nut).  FA: X-part (or Smagorinsky in mode smag); FO: O-part."""
-    S = 0.5 * (gu + gu.transpose(1, 0, 2, 3, 4))
-    nut = (CS * DELTA) ** 2 * np.sqrt(2.0 * np.einsum('ij...,ij...->...', S, S))
+    """Returns (FA_h, FO_h, ex, nut); FA_h, FO_h are spectral (unmasked, unprojected)."""
+    S = strain_of(gu)
+    S2 = 2.0 * np.sum(S * S, axis=(0, 1))
+    nut = (args.Cs * DELTA) ** 2 * np.sqrt(S2)
     ex = {"numax": float(nut.max())}
-    FA_h = np.zeros((3, N, N, Nh), complex)
-    FO_h = np.zeros((3, N, N, Nh), complex)
-    if MODE == "smag":
-        tau = (2.0 * nut) * S
-        tauh = rfft(tau.reshape(9, N, N, N)).reshape(3, 3, N, N, Nh)
-        FA_h = 1j * np.einsum('i...,ij...->j...', K, tauh)
-        return FA_h, FO_h, ex, nut
-    w2 = (wp ** 2).sum(0)
-    if CX != 0.0:
-        w2h = rfft(w2) * mask
-        g = irfft(1j * K * w2h[None])
-        gn = np.sqrt((g ** 2).sum(0))
-        
-        # [Z-CORE SYNC]: Eq (15) X_i = -C_X d_i|w|^2 / (|grad|w|^2| + delta_m)
-        Xv_raw = -CX * g / (gn + DM)
-        
-        # [Z-CORE SYNC]: Helmholtz Solenoidal Projection (div X = 0)
-        Xh_raw = rfft(Xv_raw) * mask
-        Xh_proj = proj(Xh_raw)
-        Xv = irfft(Xh_proj)
-        
-        ex["Xmax"] = float(np.sqrt((Xv ** 2).sum(0)).max())
+    if args.mode == "smag":
+        tauh = rfft(2.0 * nut[None, None] * S)
+        F = np.array([1j * sum(K[i] * tauh[i, j] for i in range(3)) for j in range(3)])
+        return F, np.zeros_like(F), ex, nut
+
+    w2 = np.sum(wp * wp, axis=0)
+    FA = np.zeros((3, N, N, N))
+    if args.CX != 0.0:
+        g = grad((rfft(w2) * mask)[None])[0]                 # g_i = d_i |omega|^2
+        gn = np.sqrt(np.sum(g * g, axis=0))
+        Xraw = -args.CX * g / (gn + args.dm)
+        Xh = proj(rfft(Xraw) * mask)
+        X = irfft(Xh)
+        divX = irfft(1j * (KX * Xh[0] + KY * Xh[1] + KZ * Xh[2]))
+        ex["Xmax"] = float(np.sqrt(np.sum(X * X, axis=0)).max())
+        ex["divXmax"] = float(np.abs(divX).max())             # v3: measured
+        FA = np.array([sum(X[i] * gu[j, i] for i in range(3)) for j in range(3)])   # (X.grad)u
         if keep is not None:
-            keep["Xv"], keep["g"] = Xv, g
-            
-        # [Z-CORE SYNC]: Since div X = 0, the dilatation term vanishes identically.
-        ex["divXmax"] = 0.0
-        if keep is not None:
-            keep["divX"] = np.zeros_like(Xv[0])
-            
-        # F_j = (X.grad)u_j (Dilatation term is annihilated)
-        FA = np.einsum('i...,ji...->j...', Xv, gu)
-        FA_h = rfft(FA)
-        
-    if CO != 0.0:
-        Ov = CO * nut * (w2 / (w2 + EPS)) * wp           # (O . w)_i = C_O nu_t |w|^2/(|w|^2+eps) w_i   (O is rank-1 along w)
-        FO_h = -curl_hat(rfft(Ov) * mask)                # F_O = - curl (O . w)
-    return FA_h, FO_h, ex, nut
+            keep.update(X=X, g=g, divX=divX)
+    FO = np.zeros((3, N, N, N))
+    if args.CO != 0.0:
+        Ov = args.CO * nut * w2 / (w2 + args.eps) * wp        # O . omega
+        FO = irfft(-curl_hat(rfft(Ov) * mask))
+
+    # v3: the TZT forcing acts only on the critical region K
+    chi = valve(w2, S2)
+    FA = chi[None] * FA
+    FO = chi[None] * FO
+    ex["valve_frac"] = float(np.mean(chi > 0.0))
+    ex["chi_mean"] = float(chi.mean())
+    ex["core_res"] = core_residual(chi, S2)
+    if keep is not None:
+        keep.update(chi=chi, S2=S2)
+    return rfft(FA), rfft(FO), ex, nut
 
 
+# ----------------------------------------------------------------------------- right-hand side
 def compute_rhs(uh, info=False):
     wh = curl_hat(uh)
     up = irfft(uh)
     wp = irfft(wh)
-    ch = proj(rfft(np.cross(up, wp, axis=0)) * mask)      # P[u x w]
-    out = ch - NU * K2 * uh
-    inf = None
-    if info:
-        inf = {"wmax": float(np.sqrt((wp ** 2).sum(0).max())), "PS": dot(uh, ch, K2), "dE_NL": dot(uh, ch, 1.0)}
-    if MODE != "base":
-        gu = grad(uh)
-        FA_h, FO_h, ex, _ = forcing(uh, up, wp, gu)
-        FA_h = proj(FA_h * mask)
-        FO_h = FO_h * mask
-        out = out + FA_h + FO_h
-        if info:
-            inf.update(ex)
-            inf["PA"], inf["PO"] = dot(uh, FA_h, 1.0), dot(uh, FO_h, 1.0)
-            inf["QA"], inf["QO"] = dot(uh, FA_h, K2), dot(uh, FO_h, K2)
-    return (out, inf) if info else out
+    uxw = np.array([up[1] * wp[2] - up[2] * wp[1],
+                    up[2] * wp[0] - up[0] * wp[2],
+                    up[0] * wp[1] - up[1] * wp[0]])
+    ch = proj(rfft(uxw) * mask)                               # P[u x omega], rotational form
+    rhs = ch - args.nu * K2 * uh
+    if args.mode != "base":
+        FAh, FOh, ex, nut = forcing(uh, up, wp, grad(uh))
+        FAh = proj(FAh * mask)
+        FOh = proj(FOh * mask)                                # v3: chi F_O is not solenoidal
+        rhs = rhs + FAh + FOh
+    if not info:
+        return rhs, None
+    inf = {"wmax": float(np.sqrt(np.sum(wp * wp, axis=0).max())),
+           "PS": dot(uh, ch, K2),
+           "dE_NL": dot(uh, ch, 1.0)}
+    if args.mode != "base":
+        inf.update(ex)
+        inf.update(PA=dot(uh, FAh, 1.0), PO=dot(uh, FOh, 1.0),
+                   QA=dot(uh, FAh, K2), QO=dot(uh, FOh, K2))
+    return rhs, inf
 
 
-# ---------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- diagnostics
 def strip_fit(Ek, kmax):
+    """Least-squares fit  log E_k = a - n log k - 2 delta k  on lo <= k <= hi."""
+    lo = max(3, int(np.floor(0.25 * kmax)))
+    hi = int(np.floor(0.95 * kmax))
     ks = np.arange(len(Ek))
-    lo, hi = max(3, int(0.25 * kmax)), int(0.95 * kmax)
     sel = (ks >= lo) & (ks <= hi) & (Ek > 1e-26)
     if sel.sum() < 6:
         return None, None, hi
-    M = np.stack([np.ones(sel.sum()), -np.log(ks[sel]), -2.0 * ks[sel]], 1)
-    coef, *_ = np.linalg.lstsq(M, np.log(Ek[sel]), rcond=None)
+    k = ks[sel].astype(float)
+    A = np.column_stack([np.ones_like(k), -np.log(k), -2.0 * k])
+    coef = np.linalg.lstsq(A, np.log(Ek[sel]), rcond=None)[0]
     return float(coef[2]), float(coef[1]), hi
 
 
 def diag(uh, t):
-    D = {"t": t}
+    D = {"t": float(t)}
+    wh = curl_hat(uh)
     up = irfft(uh)
-    gu = grad(uh)                                             # gu[i,j] = d_j u_i
-    wp = np.stack([gu[2, 1] - gu[1, 2], gu[0, 2] - gu[2, 0], gu[1, 0] - gu[0, 1]])
-    gw = grad(curl_hat(uh))                                   # gw[i,j] = d_j w_i
-    w2 = (wp ** 2).sum(0)
-    U2 = (up ** 2).sum(0)
-    Urms = float(np.sqrt(U2.mean()))
-    S = 0.5 * (gu + gu.transpose(1, 0, 2, 3, 4))
-    stretch = np.einsum('i...,ij...,j...->...', wp, S, wp)
+    wp = irfft(wh)
+    gu = grad(uh)
+    gw = grad(wh)
+    S = strain_of(gu)
+    w2 = np.sum(wp * wp, axis=0)
+    U2 = np.sum(up * up, axis=0)
+    stretch = np.einsum("i...,ij...,j...->...", wp, S, wp)   # omega . S omega
     wmax = float(np.sqrt(w2.max()))
-    D.update(wmax=wmax, gradw_max=float(np.sqrt(np.einsum('ij...,ij...->...', gw, gw).max())),
-             umax=float(np.sqrt(U2.max())), Urms=Urms, P=float(stretch.mean()), zeta=float(0.5 * w2.mean()),
-             E=energy(uh))
-    kb = np.rint(np.sqrt(K2)).astype(int)
-    e = 0.5 * wgt * np.sum(np.abs(uh) ** 2, axis=0) / N ** 6
-    Ek = np.bincount(kb.ravel(), weights=e.ravel())
-    kmax = int(kc)
-    D["tail"] = float(Ek[int(0.75 * kmax):kmax + 1].sum() / max(Ek.sum(), 1e-300))
-    dl, nn, hi = strip_fit(Ek, kmax)
-    D["delta"], D["n"], D["delta*khi"] = dl, nn, (None if dl is None else dl * hi)
-    idx = np.unravel_index(np.argmax(w2), w2.shape)
-    sel_ = (slice(None),) + idx
-    D["argmax_pos/pi"] = [float(i * 2 / N) for i in idx]
-    D["|u|/Urms@max"] = float(np.sqrt(U2[idx]) / Urms)
+    Urms = float(np.sqrt(U2.mean()))
+    D.update(wmax=wmax,
+             gradw_max=float(np.sqrt(np.sum(gw * gw, axis=(0, 1))).max()),
+             umax=float(np.sqrt(U2.max())), Urms=Urms,
+             P=float(stretch.mean()), zeta=float(0.5 * w2.mean()), E=energy(uh))
+    # spectrum, tail, exponential-cutoff fit
+    e3 = 0.5 * wgt * np.sum(np.abs(uh) ** 2, axis=0) / N**6
+    Ek = np.bincount(KB.ravel(), weights=e3.ravel())
+    lo_t = int(np.floor(0.75 * KMAX))
+    D["tail"] = float(Ek[lo_t:KMAX + 1].sum() / max(Ek.sum(), 1e-300))
+    delta, n_exp, hi = strip_fit(Ek, KMAX)
+    D["delta"], D["n"] = delta, n_exp
+    D["delta*khi"] = None if delta is None else delta * hi
+    # peak-vorticity point
+    idx = np.unravel_index(int(np.argmax(w2)), w2.shape)
+    sl = (slice(None),) + idx
     sigma = float(stretch[idx] / w2[idx])
+    D["argmax_pos/pi"] = [2.0 * i / N for i in idx]
+    D["|u|/Urms@max"] = float(np.sqrt(U2[idx]) / Urms)
     D["sigma@max"] = sigma
-    lam, _ = np.linalg.eigh(S[(slice(None), slice(None)) + idx])
-    D["S_eig@max"] = [float(v) for v in lam]
-    hv = w2 >= 0.25 * wmax ** 2
+    D["S_eig@max"] = [float(e) for e in np.linalg.eigvalsh(S[(slice(None), slice(None)) + idx])]
+    # high-vorticity region
+    hv = w2 >= 0.25 * wmax**2
     D["hv_frac"] = float(hv.mean())
     D["hv_sigma_mean"] = float(stretch[hv].sum() / w2[hv].sum())
-    if MODE != "base":
+    # v3: Lean CriticalRegion diagnostics (all modes)
+    D["Lambda"], D["LambdaS"] = LAM, LAMS
+    D["crit_frac"] = float(np.mean(w2 > LAM * LAM))
+    D["wmax/Lambda"] = wmax / LAM if LAM > 0 else None
+
+    if args.mode != "base":
         keep = {}
-        FA_h, FO_h, ex, nut = forcing(uh, up, wp, gu, keep)
-        FA_h = proj(FA_h * mask)
-        FO_h = FO_h * mask
-        cA = irfft(curl_hat(FA_h))
-        cO = irfft(curl_hat(FO_h))
-        D['PA_spec'] = dot(uh, FA_h, 1.0)
-        if 'divX' in keep:
-            dX = keep['divX']
-            D['chk:PA_formula=<divX|u|^2>/2'] = 0.5 * float((dX * U2).mean())
-            D['chk:<divX|w|^2>/<|divX||w|^2>'] = float((dX * w2).mean() / max((np.abs(dX) * w2).mean(), 1e-300))
-            D['chk:max|X.grad|w|^2|/max|X||g|'] = float(np.abs((keep['Xv'] * keep['g']).sum(0)).max() / max(np.sqrt((keep['Xv']**2).sum(0)).max() * np.sqrt((keep['g']**2).sum(0)).max(), 1e-300))
-        lapw = irfft(-K2 * curl_hat(uh))
-        what = wp[sel_] / wmax
-        D["T_str@max"] = float(wmax * sigma)                  # |w| * w^.S.w^   (stretching of |w| at the max point)
-        D["T_A@max"] = float(what @ cA[sel_])                 # w^ . curl F_A
-        D["T_O@max"] = float(what @ cO[sel_])                 # w^ . curl F_O
-        D["T_visc@max"] = float(NU * (what @ lapw[sel_]))
-        wA = np.einsum('i...,i...->...', wp, cA)
-        wO = np.einsum('i...,i...->...', wp, cO)
-        den = stretch[hv].sum()
-        D["hv:R_A"] = float(wA[hv].sum() / den) if abs(den) > 1e-300 else None
-        D["hv:R_O"] = float(wO[hv].sum() / den) if abs(den) > 1e-300 else None
+        FAh, FOh, ex, nut = forcing(uh, up, wp, gu, keep)
+        FA = proj(FAh * mask)
+        FO = proj(FOh * mask)
+        cA = irfft(curl_hat(FA))
+        cO = irfft(curl_hat(FO))
+        D["PA_spec"] = dot(uh, FA, 1.0)
+        if "divX" in keep:
+            divX, X, g = keep["divX"], keep["X"], keep["g"]
+            D["chk:PA_formula=<divX|u|^2>/2"] = float(0.5 * np.mean(divX * U2))
+            D["chk:<divX|w|^2>/<|divX||w|^2>"] = float(
+                np.mean(divX * w2) / max(np.mean(np.abs(divX) * w2), 1e-300))
+            Xn = np.sqrt(np.sum(X * X, axis=0))
+            gn = np.sqrt(np.sum(g * g, axis=0))
+            D["chk:max|X.grad|w|^2|/max|X||g|"] = float(
+                np.abs(np.sum(X * g, axis=0)).max() / max(Xn.max() * gn.max(), 1e-300))
+        what = wp[sl] / wmax
+        lapw = irfft(-K2 * wh)
+        D["T_str@max"] = float(np.sqrt(w2[idx]) * sigma)
+        D["T_A@max"] = float(what @ cA[sl])
+        D["T_O@max"] = float(what @ cO[sl])
+        D["T_visc@max"] = float(args.nu * (what @ lapw[sl]))
+        den = float(stretch[hv].sum())
+        D["hv:R_A"] = float(np.sum(np.sum(wp * cA, axis=0)[hv]) / den) if abs(den) > 1e-300 else None
+        D["hv:R_O"] = float(np.sum(np.sum(wp * cO, axis=0)[hv]) / den) if abs(den) > 1e-300 else None
         D["nut@max"] = float(nut[idx])
         D["nut_max"] = float(nut.max())
         D["nut_mean"] = float(nut.mean())
-        D.update({k: v for k, v in ex.items() if k != "numax"})
+        if "Xmax" in ex:
+            D["Xmax"], D["divXmax"] = ex["Xmax"], ex["divXmax"]
+        if args.mode == "tzt":
+            chi = keep["chi"]
+            D["valve"] = args.valve
+            D["valve_frac"] = ex["valve_frac"]
+            D["chi_mean"] = ex["chi_mean"]
+            D["valve@max"] = float(chi[idx])
+            D["core_res"] = ex["core_res"]
+            D["P_in"] = float(np.mean(chi * stretch))         # stretching inside the valve
+            D["P_out"] = float(np.mean((1.0 - chi) * stretch))  # classical region
     return D
 
 
-def main():
-    nsteps = int(round(TEND / DT))
-    diag_steps = {int(round(tt / DT)) for tt in np.arange(0, TEND + 1e-9, A.diag_every)}
-    u0 = np.stack([np.sin(X_) * np.cos(Y_) * np.cos(Z_), -np.cos(X_) * np.sin(Y_) * np.cos(Z_), np.zeros_like(X_)])
-    uh = rfft(u0) * mask
-    E0 = energy(uh)
-    cols = ["t", "E", "zeta", "wmax", "PS", "Dnu", "PA", "PO", "QA", "QO", "numax", "Xmax", "divXmax"]
-    series, diags, status = [], [], "ok"
-    t0 = time.time()
-    for n in range(nsteps + 1):
-        t = n * DT
-        if n < nsteps:
-            k1_, inf = compute_rhs(uh, True)
-            k2_ = compute_rhs(uh + 0.5 * DT * k1_)
-            k3_ = compute_rhs(uh + 0.5 * DT * k2_)
-            k4_ = compute_rhs(uh + DT * k3_)
-            new = uh + DT / 6.0 * (k1_ + 2 * k2_ + 2 * k3_ + k4_)
-        else:
-            _, inf = compute_rhs(uh, True)
-            new = None
-        E = energy(uh)
-        series.append([t, E, enstrophy(uh), inf["wmax"], inf["PS"], visc_dest(uh)] +
-                      [inf.get(k, 0.0) for k in cols[6:]])
-        if not np.isfinite(E) or E > 50 * E0:
-            status = f"unstable at t={t:.3f}"
-            print("[abort]", status, flush=True)
+# ----------------------------------------------------------------------------- run
+u0 = np.array([np.sin(GX) * np.cos(GY) * np.cos(GZ),
+               -np.cos(GX) * np.sin(GY) * np.cos(GZ),
+               np.zeros_like(GX)])
+uh = mask * rfft(u0)
+E0 = energy(uh)
+
+_w0 = irfft(curl_hat(uh))
+_S0 = strain_of(grad(uh))
+wmax0 = float(np.sqrt(np.sum(_w0 * _w0, axis=0).max()))
+Smax0 = float(np.sqrt(2.0 * np.sum(_S0 * _S0, axis=(0, 1))).max())
+LAM = args.Lambda if args.Lambda >= 0 else args.Lambda_rel * wmax0
+LAMS = args.LambdaS if args.LambdaS >= 0 else args.Lambda_rel * Smax0
+if args.mode == "tzt":
+    print(f"[valve] mode={args.valve}  Lambda={LAM:.6g}  Lambda_S={LAMS:.6g}  "
+          f"(max|omega0|={wmax0:.6g}, max|S0|={Smax0:.6g}, width={args.valve_width})")
+
+nsteps = int(round(args.T / args.dt))
+dsteps = {int(round(tt / args.dt)) for tt in np.arange(0.0, args.T + 1e-9, args.diag_every)}
+cols = ["t", "E", "zeta", "wmax", "PS", "Dnu", "PA", "PO", "QA", "QO", "numax", "Xmax",
+        "divXmax", "valve_frac", "core_res"]
+series, diags = [], []
+status = "ok"
+t_start = time.time()
+
+for n in range(nsteps + 1):
+    t = n * args.dt
+    k1, inf = compute_rhs(uh, info=True)
+    if n < nsteps:
+        k2, _ = compute_rhs(uh + 0.5 * args.dt * k1)
+        k3, _ = compute_rhs(uh + 0.5 * args.dt * k2)
+        k4, _ = compute_rhs(uh + args.dt * k3)
+        uh_new = uh + (args.dt / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+    E = energy(uh)
+    series.append([t, E, enstrophy(uh), inf["wmax"], inf["PS"], visc_dest(uh)]
+                  + [inf.get(c, 0.0) for c in cols[6:]])
+    if not np.isfinite(E) or E > 50.0 * E0:
+        status = f"unstable at t={t:.4f}"
+        print(f"[abort] {status}")
+        break
+    if n in dsteps:
+        try:
+            d = diag(uh, t)
+        except Exception as exc:                              # keep the run's output
+            status = f"diag error at t={t:.4f}: {exc}"
+            print(f"[abort] {status}")
             break
-        if n in diag_steps:
-            try:
-                d = diag(uh, t)
-            except Exception as ex_:
-                status = f'diag error at t={t:.3f}: {ex_}'
-                print('[abort]', status, flush=True)
-                break
-            diags.append(d)
-            print(f"[diag] t={t:5.2f} E/E0={d['E']/E0:.5f} zeta={d['zeta']:.4f} wmax={d['wmax']:.3f} "
-                  f"|grad w|max={d['gradw_max']:.1f} delta={d['delta']} tail={d['tail']:.1e} ({time.time()-t0:.0f}s)",
-                  flush=True)
-        if new is not None:
-            uh = new
-    res = {"args": vars(A), "cols": cols, "series": series, "diag": diags, "status": status,
-           "E0": E0, "runtime_s": time.time() - t0}
-    out = A.out or f"res_{MODE}_N{N}.json"
-    with open(out, "w") as f:
-        json.dump(res, f)
-    print("saved", out, status, f"{time.time()-t0:.0f}s", flush=True)
+        diags.append(d)
+        line = (f"t={t:6.3f}  E={d['E']:.6e}  wmax={d['wmax']:.4f}  P={d['P']:.4e}  "
+                f"crit_frac={d['crit_frac']:.4f}")
+        if args.mode == "tzt":
+            line += f"  valve_frac={d['valve_frac']:.4f}  core_res={d['core_res']:.3f}"
+        print(line)
+    if n < nsteps:
+        uh = uh_new
 
-
-if __name__ == "__main__":
-    main()
+out = args.out or f"res_{args.mode}_N{N}.json"
+result = {"args": vars(args), "cols": cols, "series": series, "diag": diags, "status": status,
+          "E0": E0, "runtime_s": time.time() - t_start,
+          "version": "v3-localized", "Lambda": LAM, "LambdaS": LAMS,
+          "wmax0": wmax0, "Smax0": Smax0}
+with open(out, "w") as fh:
+    json.dump(result, fh, indent=1)
+print(f"[done] status={status}  wrote {out}")
