@@ -22,6 +22,8 @@ To strictly observe the geometric bypass channels, the TZT core was explicitly c
 * \epsilon (Spin Saturation): 10^{-2}
 * \nu_{turb} (Dynamic Eddy Viscosity): Based on static Smagorinsky model with C_s = 0.17 and filter \Delta = 2\pi/N
 
+Note: The provided baseline data and PNG figures reflect the global topological boundary limit (--valve global). The latest solver code employs the advanced localized Fractal Valve for optimized equilibrium rendering.
+
 
 ---
 ## License & Copyright
