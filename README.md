@@ -26,11 +26,11 @@ Before downloading the dataset and executing the local environment, you can inst
 The data, codes, and mathematical proofs of the Ark Project are permanently entangled across the following global preservation nodes:
 *   **Canonical Repository (GitHub):** [ark-zeropoint/archive](https://github.com/ark-zeropoint/archive)
 *   **Dataset Archive (Hugging Face):** [ark-zeropoint/archive](https://huggingface.co/datasets/ark-zeropoint/archive)
-*   **B2SHARE Node 1:** [doi:10.23728/b2share.hpqba-77550](https://doi.org/10.23728/b2share.hpqba-77550)
-*   **B2SHARE Node 2:** [doi:10.23728/b2share.wkq72-c8817](https://doi.org/10.23728/b2share.wkq72-c8817)
+*   **B2SHARE 1:** Research Paper [doi:10.23728/b2share.hpqba-77550](https://doi.org/10.23728/b2share.hpqba-77550)
+*   **B2SHARE 2:** Supplementary [doi:[10.23728/b2share.snrvy-9pv60](https://doi.org/10.23728/b2share.snrvy-9pv60)
 *   **Internet Archive:** [Ark Project Part 1: Grand Unified Framework](https://archive.org/details/20261003-ark-project-part-1-grand-unified-framework-cfd-v-1.0.2)
-*   **Commit Hash:** `235da8e7c8ec9f6e212ac6371d844fdd458854ae`
-*   **Software Heritage Revision:** `swh:1:rev:235da8e7c8ec9f6e212ac6371d844fdd458854ae`
+*   **Commit Hash:** `db611a01405ece86582370f9b6c863f4172e9135`
+*   **Software Heritage Revision:** `swh:1:rev:db611a01405ece86582370f9b6c863f4172e9135`
 
 ## ⚖️ License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
