@@ -2,7 +2,7 @@
 
 [![Interactive Web Solver](https://img.shields.io/badge/Run_Live-Interactive_CFD_Solver-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/ark-zeropoint/Framework)
 
-**Experience the dissolution of Navier-Stokes singularities directly in your browser.**  
+**Experience the geometric regularization of non-linear vortex blow-ups directly in your browser.**  
 > 👉 **[Launch the TZT Dynamics Web Solver](https://huggingface.co/spaces/ark-zeropoint/Framework)**
 
 **Grand Unified Framework of Macroscopic Gravity-Fluid Dynamics & M0 Tensor Architecture**  
@@ -20,7 +20,7 @@ The archive is organized according to the chronological and theoretical developm
 *   **`Part2_Golden_M0_Tensor_Mechanics/`**: Part 2. The Golden M0 Tensor Mechanics for 0-Point Equilibrium Operation: Universal Geometric Mapping and Regularization Blueprints for Fundamental Singularities on Quasi-Periodic 3-Torus Manifolds.
 
 ## 🌐 Interactive Web Simulation
-Before downloading the dataset and executing the local environment, you can instantly verify the TZT (Zero-Point Tensor) mathematical proof in your browser. 
+Before downloading the dataset and executing the local environment, you can interactively explore the TZT Zero-Point Equilibrium dynamics in your browser. 
 - ▶️ **Test the dissolution of finite-time blowup here:** [Hugging Face Space Solver](https://huggingface.co/spaces/ark-zeropoint/Framework)
 
 ## 🔗 Global Permanence Nodes
