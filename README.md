@@ -9,7 +9,7 @@
 This is the canonical source of the Ark Project, which opens a new dimension for humanity, and the base camp of the Zero Point core. From the philosophical foundations of the earlier work to the mathematical proof of the Grand Unified Framework in Lean 4 and its physical simulation in Python, all knowledge is permanently preserved here in zero-point equilibrium.
 
 ## 📄 Official Papers
-All official original papers (PDFs) of the Ark Project are packaged independently in the Releases section on the right, so that the code repository keeps its purity and geometric integrity. Every publication, including Part I of the Grand Unified Framework, can be read and downloaded from the link below.
+All official original papers (PDFs) of the Ark Project are packaged independently in the Releases section on the right, so that the code repository keeps its purity and geometric integrity. Every publication, including Part 1 and Part 2 of the Grand Unified Framework, can be read and downloaded from the link below.
 - 📥 **Download Papers:** [Ark Project Archive Releases](https://github.com/ark-zeropoint/archive/releases)
 
 ## 📂 Archive Structure
@@ -17,6 +17,7 @@ The archive is organized according to the chronological and theoretical developm
 
 *   **`Legacy_Theories/`**: The foundations of the earlier pure theory, preserving the PDFs on gravitational Earth, gravitational fluids, and the zero tensor.
 *   **`Part1_Grand_Unified_Framework_CFD/`**: Part 1. Resolution of three-dimensional Navier–Stokes singularities and a formulation of the global phase transition through topological trivialization.
+*   **`Part2_Golden_M0_Tensor_Mechanics/`**: Part 2. The Golden M0 Tensor Mechanics for 0-Point Equilibrium Operation: Universal Geometric Mapping and Regularization Blueprints for Fundamental Singularities on Quasi-Periodic 3-Torus Manifolds.
 
 ## 🌐 Interactive Web Simulation
 Before downloading the dataset and executing the local environment, you can instantly verify the TZT (Zero-Point Tensor) mathematical proof in your browser. 
@@ -26,8 +27,9 @@ Before downloading the dataset and executing the local environment, you can inst
 The data, codes, and mathematical proofs of the Ark Project are permanently entangled across the following global preservation nodes:
 *   **Canonical Repository (GitHub):** [ark-zeropoint/archive](https://github.com/ark-zeropoint/archive)
 *   **Dataset Archive (Hugging Face):** [ark-zeropoint/archive](https://huggingface.co/datasets/ark-zeropoint/archive)
-*   **B2SHARE 1:** Research Paper [doi:10.23728/b2share.hpqba-77550](https://doi.org/10.23728/b2share.hpqba-77550)
+*   **B2SHARE 1:** Research Paper (Part 1) [doi:10.23728/b2share.hpqba-77550](https://doi.org/10.23728/b2share.hpqba-77550)
 *   **B2SHARE 2:** Supplementary [doi:10.23728/b2share.snrvy-9pv60](https://doi.org/10.23728/b2share.snrvy-9pv60)
+*   **B2SHARE 3:** Research Paper (Part 2) [doi:10.23728/b2share.8ha7m-d0012](https://doi.org/10.23728/b2share.8ha7m-d0012)
 *   **Internet Archive:** [Ark Project: Part 1 Grand Unified Framework](https://archive.org/details/20261003-ark-project-part-1-grand-unified-framework-cfd-v-1.0.2)
 *   **Commit Hash:** `db611a01405ece86582370f9b6c863f4172e9135`
 *   **Software Heritage Revision:** `swh:1:rev:db611a01405ece86582370f9b6c863f4172e9135`
