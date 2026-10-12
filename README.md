@@ -31,8 +31,8 @@ The data, codes, and mathematical proofs of the Ark Project are permanently enta
 *   **B2SHARE 2:** Supplementary [doi:10.23728/b2share.snrvy-9pv60](https://doi.org/10.23728/b2share.snrvy-9pv60)
 *   **B2SHARE 3:** Research Paper (Part 2) [doi:10.23728/b2share.8ha7m-d0012](https://doi.org/10.23728/b2share.8ha7m-d0012)
 *   **Internet Archive:** [Ark Project: Part 1 Grand Unified Framework](https://archive.org/details/20261003-ark-project-part-1-grand-unified-framework-cfd-v-1.0.2)
-*   **Commit Hash:** `db611a01405ece86582370f9b6c863f4172e9135`
-*   **Software Heritage Revision:** `swh:1:rev:db611a01405ece86582370f9b6c863f4172e9135`
+*   **Commit Hash:** `6e5a95c8ef22d1d6b7fe258edfbdb5ce61849ac3`
+*   **Software Heritage Revision:** `swh:1:rev:6e5a95c8ef22d1d6b7fe258edfbdb5ce61849ac3`
 
 ## ⚖️ License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
