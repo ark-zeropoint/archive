@@ -50,7 +50,6 @@ $$F_{\mathrm{axis}} = c_X \Omega_c \mathbb{P} G(u, \omega), \qquad G(u, \omega) 
 
 ## Repository Structure
 
-```text
 .
 ├── Vorticity-Selective_Dissipative_Model_v1.0.pdf  # Full academic manuscript
 ├── README.md                                      # Repository overview
