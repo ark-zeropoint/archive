@@ -12,7 +12,7 @@
 
 ## License & Copyright
 
-**Copyright (c) 2026 Jung Soo Kim.**
+**Copyright (c) 2026 Jung Soo Kim.**  
 **SPDX-License-Identifier: CC-BY-NC-4.0**
 
 The main manuscript and all enclosed supplementary materials (including analytical proofs, formal verification code, CAS scripts, DNS benchmark data, and solvers) are licensed under a **[Creative Commons Attribution-NonCommercial 4.0 International License]**.
