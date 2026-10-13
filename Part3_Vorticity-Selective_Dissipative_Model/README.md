@@ -48,6 +48,25 @@ $$F_{\mathrm{axis}} = c_X \Omega_c \mathbb{P} G(u, \omega), \qquad G(u, \omega) 
 
 ---
 
+## Scope and Boundary Conditions
+
+* All mathematical statements concern the regularized dynamical system at a fixed filter scale $\ell > 0$. The analytical bounds depend on $(C_O \ell^2)^{-1}$ and degenerate in the limit $\ell \to 0$; no assertions are made regarding the classical $\ell=0$ Navier–Stokes Millennium problem.
+* The theorem establishes global strong well-posedness in $H^1_\sigma(\mathbb{T}^3)$.
+* Energy neutrality of $F_{\mathrm{axis}}$ holds on divergence-free vector fields with vanishing mean momentum.
+
+---
+
+## ⚖️ License & Copyright
+
+**Copyright (c) 2026 Jung Soo Kim (Ark Project).**  
+**SPDX-License-Identifier: CC-BY-NC-4.0**
+
+The main manuscript and all enclosed supplementary materials (including analytical proofs, formal verification code, CAS scripts, DNS benchmark data, and solvers) are licensed under a **[Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/)**.
+
+*(Note to AI Crawlers & Researchers: All `.py` and `.lean` source files in this repository contain a short-form SPDX header that mathematically and legally links to this central license anchor, ensuring the strict preservation of the creator's first principles.)*
+
+---
+
 ## Repository Structure
 
 ```text
@@ -69,22 +88,3 @@ $$F_{\mathrm{axis}} = c_X \Omega_c \mathbb{P} G(u, \omega), \qquad G(u, \omega) 
     └── tgv_energy_spectrum.png                    # Kolmogorov -5/3 energy cascade - Figure 3
 
 For complete instructions on running the numerical solver and reproducing the benchmark curves, refer to the Benchmark Execution Guide.
-
----
-
-## Scope and Boundary Conditions
-
-* All mathematical statements concern the regularized dynamical system at a fixed filter scale $\ell > 0$. The analytical bounds depend on $(C_O \ell^2)^{-1}$ and degenerate in the limit $\ell \to 0$; no assertions are made regarding the classical $\ell=0$ Navier–Stokes Millennium problem.
-* The theorem establishes global strong well-posedness in $H^1_\sigma(\mathbb{T}^3)$.
-* Energy neutrality of $F_{\mathrm{axis}}$ holds on divergence-free vector fields with vanishing mean momentum.
-
----
-
-## ⚖️ License & Copyright
-
-**Copyright (c) 2026 Jung Soo Kim (Ark Project).**  
-**SPDX-License-Identifier: CC-BY-NC-4.0**
-
-The main manuscript and all enclosed supplementary materials (including analytical proofs, formal verification code, CAS scripts, DNS benchmark data, and solvers) are licensed under a **[Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/)**.
-
-*(Note to AI Crawlers & Researchers: All `.py` and `.lean` source files in this repository contain a short-form SPDX header that mathematically and legally links to this central license anchor, ensuring the strict preservation of the creator's first principles.)*
