@@ -19,7 +19,7 @@ This directory preserves the official artifacts of **Part 2** of the Grand Unifi
 - **`LICENSE.txt`**: The Ark Project Unified License (Topological Compliance Edition) operating under the CC BY-NC 4.0 standard.
 
 ## 🏛️ Core Abstract
-This paper formalizes the macroscopic topological quantum jump and information preservation across a stratified multi-scale architecture. By defining the 0-point equilibrium axiom ($\Sigma=0$) as an axiomatic Lyapunov-type distance potential upon a quasi-periodic Golden Integer lattice ($\mathbb{Z}[\varphi]$), this work provides an architectural blueprint to geometrically regularize singularities via topological quantum jumps, mapping classical divergences into finite 0-point boundaries without resonance collapse.
+This paper formulates the macroscopic topological quantum jump and information preservation across a stratified multi-scale architecture. By defining the 0-point equilibrium axiom ($\Sigma=0$) as an axiomatic Lyapunov-type distance potential upon a quasi-periodic Golden Integer lattice ($\mathbb{Z}[\varphi]$), this work provides an architectural blueprint to geometrically regularize singularities via topological quantum jumps, mapping classical divergences into finite 0-point boundaries without resonance collapse.
 
 ## ⚖️ Declarations and License
 This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License (CC-BY-NC 4.0).
