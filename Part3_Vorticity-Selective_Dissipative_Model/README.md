@@ -50,21 +50,23 @@ $$F_{\mathrm{axis}} = c_X \Omega_c \mathbb{P} G(u, \omega), \qquad G(u, \omega) 
 
 ## Repository Structure
 
-| Vorticity-Selective_Dissipative_Model_v1.0.pdf  # Full academic manuscript
-| README.md                                      # Repository overview
-| LICENSE.txt                                    # CC BY-NC 4.0 and Ark Project Unified License
-| benchmark/                                     # CFD simulation and reproduction environment
-| | README.md                                  # Benchmark execution guide and CLI options
-| | tzt_tgv_benchmark.py                       # 3D pseudo-spectral CFD solver
-| | requirements.txt                           # Minimal Python dependencies
-| | run_benchmark.sh                           # Automated one-click execution script
-| | make_colab_notebook.py                     # Notebook generator script
-| | Colab_TGV_Benchmark.ipynb                 # Standalone interactive notebook
-| results/                                       # Output telemetry, figures, and CSV datasets
-| | tgv_metrics.csv                            # Full time-series metric data
-| | tgv_dissipation_rate.png                   # Dissipation rate comparison - Figure 1
-| | tgv_max_vorticity.png                      # Enstrophy boundedness verification - Figure 2
-| | tgv_energy_spectrum.png                    # Kolmogorov -5/3 energy cascade - Figure 3
+```text
+.
+├── Vorticity-Selective_Dissipative_Model_v1.0.pdf  # Full academic manuscript
+├── README.md                                      # Repository overview
+├── LICENSE.txt                                    # CC BY-NC 4.0 and Ark Project Unified License
+├── benchmark/                                     # CFD simulation and reproduction environment
+│   ├── README.md                                  # Benchmark execution guide and CLI options
+│   ├── tzt_tgv_benchmark.py                       # 3D pseudo-spectral CFD solver
+│   ├── requirements.txt                           # Minimal Python dependencies
+│   ├── run_benchmark.sh                           # Automated one-click execution script
+│   ├── make_colab_notebook.py                     # Notebook generator script
+│   └── Colab_TGV_Benchmark.ipynb                 # Standalone interactive notebook
+└── results/                                       # Output telemetry, figures, and CSV datasets
+    ├── tgv_metrics.csv                            # Full time-series metric data
+    ├── tgv_dissipation_rate.png                   # Dissipation rate comparison - Figure 1
+    ├── tgv_max_vorticity.png                      # Enstrophy boundedness verification - Figure 2
+    └── tgv_energy_spectrum.png                    # Kolmogorov -5/3 energy cascade - Figure 3
 
 For complete instructions on running the numerical solver and reproducing the benchmark curves, refer to the Benchmark Execution Guide.
 
