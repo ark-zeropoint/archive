@@ -2,12 +2,12 @@
 
 **Global Well-Posedness and Subgrid-Scale Dynamics**
 
-[![Paper (PDF)](https://img.shields.io/badge/Paper-PDF-b31b1b?logo=adobeacrobatreader&logoColor=white)](./Vorticity-Selective_Dissipative_Model_v1.0.pdf)
+[![Paper (PDF)](https://img.shields.io/badge/Paper-PDF-b31b1b?logo=adobeacrobatreader&logoColor=white)](./Vorticity-Selective_Dissipative_Model_v1.0.0.pdf)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0006--5140--0604-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0009-0006-5140-0604)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 
 **Author:** Jung Soo Kim (Independent Researcher) · ORCID [0009-0006-5140-0604](https://orcid.org/0009-0006-5140-0604)  
-**Artifact:** Formal Research Paper PDF (`Vorticity-Selective_Dissipative_Model_v1.0.pdf`) & CFD Verification Suite (`benchmark/`)
+**Artifact:** Formal Research Paper PDF (`Vorticity-Selective_Dissipative_Model_v1.0.0.pdf`) & CFD Verification Suite (`benchmark/`)
 
 ---
 
