@@ -1,4 +1,4 @@
-Ark Project: Grand Unified Framework - Software Heritage (SWHID) Records
+Ark Project: Zero Point - Software Heritage (SWHID) Records
 
 
 
@@ -11,6 +11,16 @@ This document maintains the cryptographic hashes (SWHID) for the exact source co
 3. snapshot
 
 
+
+2026-10-14
+
+https://archive.softwareheritage.org/swh:1:dir:72b7f4285a070a3b15e6d9413fefd5d3237af1ba;origin=https://github.com/ark-zeropoint/archive;visit=swh:1:snp:7e1b725ee1a83acc39d3cf1f08d3810d43916f5d;anchor=swh:1:rev:f8381c18b6625c914923be105fb35fd407cfb1c4
+
+https://archive.softwareheritage.org/swh:1:rev:f8381c18b6625c914923be105fb35fd407cfb1c4;origin=https://github.com/ark-zeropoint/archive;visit=swh:1:snp:7e1b725ee1a83acc39d3cf1f08d3810d43916f5d
+
+https://archive.softwareheritage.org/swh:1:snp:7e1b725ee1a83acc39d3cf1f08d3810d43916f5d;origin=https://github.com/ark-zeropoint/archive
+
+---
 
 2026-10-12
 
