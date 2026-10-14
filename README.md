@@ -20,8 +20,8 @@ The data, codes, and formal verification assets of the Ark Project are permanent
 *   **Internet Archive 1:** [Ark Project: Part 1 Grand Unified Framework](https://archive.org/details/20261003-ark-project-part-1-grand-unified-framework-cfd-v-1.0.2)
 *   **Internet Archive 2:** [Ark Project: Part 2 Golden M 0 Tensor Mechanics](https://archive.org/details/20261012-ark-project-part-2-golden-m-0-tensor-mechanics-v-1.0.0)
 *   **Internet Archive 3:** [Ark Project: Part 3 Vorticity Selective Dissipative Model](https://archive.org/details/20261013-ark-project-part-3-vorticity-selective-dissipative-model-v-1.0.0)
-*   **Commit Hash:** `6e5a95c8ef22d1d6b7fe258edfbdb5ce61849ac3`
-*   **Software Heritage Revision:** `swh:1:rev:6e5a95c8ef22d1d6b7fe258edfbdb5ce61849ac3`
+*   **Commit Hash:** `f8381c18b6625c914923be105fb35fd407cfb1c4`
+*   **Software Heritage Revision:** `swh:1:rev:f8381c18b6625c914923be105fb35fd407cfb1c4`
 
 ## ⚖️ License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
