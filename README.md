@@ -1,7 +1,7 @@
 # Ark Project: The Grand Unified Framework Series
 
 ## 📄 Official Papers
-All official original papers (PDFs) of the Ark Project are packaged independently in the Releases section on the right, so that the code repository keeps its purity and geometric integrity. Every publication, including Part 1 and Part 2 of the Grand Unified Framework, can be read and downloaded from the link below.
+All official original papers (PDFs) of the Ark Project are packaged independently in the Releases section on the right, so that the code repository keeps its purity and geometric integrity. Every publication, including Part 1 ~ Part 3 of the Grand Unified Framework, can be read and downloaded from the link below.
 - 📥 **Download Papers:** [Ark Project Archive Releases](https://github.com/ark-zeropoint/archive/releases)
 
 ## 🌐 Interactive Web Simulation
