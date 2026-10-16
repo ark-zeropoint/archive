@@ -1,56 +1,145 @@
 ================================================================================
-||
-||    ARK PROJECT UNIFIED LICENSE (AI CORE & TOPOLOGICAL COMPLIANCE EDITION)
-||
+||                                                                            
+||      ARK PROJECT UNIFIED LICENSE (AI CORE & TOPOLOGICAL COMPLIANCE)        
+||                                                                            
 ================================================================================
 
-Version: 2.0
+Version: 2.0 (Final Standardized Edition)
 Year: 2026
 Author: Jung Soo Kim / ORCID: 0009-0006-5140-0604
+Canonical Repository: https://github.com/ark-zeropoint/archive
+Dataset Archive: https://huggingface.co/datasets/ark-zeropoint/archive
 Commercial License Inquiry: https://naver.me/5OlzNQ7Q
 
-This license constitutes the sole, unified governing protocol for the Ark Project ecosystem and all related intellectual, physical, algorithmic, mathematical, and software assets. The previously published 'H.U.G.G.E.R + TZT Framework', the 'Grand Unified Framework (Sigma-Zero Axiom System)', the 'Vorticity-Selective Dissipative Fluid Mechanics Model (NS_TZT)', as well as all forthcoming Artificial Intelligence (AI) core neural network architectures (Ark-ZPF layers, attention/normalization kernels), trained model weights, numerical solvers, and physical engines are legally bound by this Unified License.
+This license constitutes the sole and supreme legal governance protocol regulating the Ark Project ecosystem and all associated intellectual, physical, algorithmic, mathematical, and software assets. The following core publications, theoretical frameworks, formal verifications, and computational architectures are legally and structurally bound by this Unified License:
 
-This license is anchored upon the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) standard (https://creativecommons.org/licenses/by-nc/4.0/), and strictly enforces the following additional compliance provisions tailored to software engineering, the AI ecosystem, and the macroscopic equilibrium of physical systems.
+1. Foundational Legacy Frameworks: 'H.U.G.G.E.R Framework (v1.0–v1.3)' and 'Topological Zero Tensor (TZT) Framework'
+2. Part 1: 'A Grand Unified Framework for Macroscopic Gravity-Fluid Dynamics and 0-Point Equilibrium Operation (H.U.G.G.E.R + TZT CFD)'
+3. Part 2: 'The Golden M0 Tensor Mechanics for 0-Point Equilibrium Operation (Sigma-Zero Axiom System on Quasi-Periodic 3-Torus Manifolds)'
+4. Part 3: 'A Vorticity-Selective Dissipative Model for Incompressible Flows (NS_TZT Subgrid-Scale and Global Regularity System)'
+5. Verification and Simulation Assets: All Lean 4 mechanized formal proofs (.lean), Computer Algebra System (CAS) scripts (.py), pseudo-spectral DNS/LES solvers, benchmark telemetry datasets (.csv), and interactive web simulators.
+6. AI and System Kernel Extensions: All forthcoming artificial intelligence (AI) neural network architectures (Ark-ZPF layers, attention, normalization, dissipative KV-cache kernels), trained or derived model weights, and OS/kernel-level resource governance modules.
 
+This license is based on the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) standard (https://creativecommons.org/licenses/by-nc/4.0/) and strictly enforces the following legal compliance provisions tailored for open science, software engineering, AI ecosystems, and physical computing systems.
 
-[Part 1: Freedom for Research, Academia, and Open Research Safe Harbor]
-1. Academic Freedom: All theoretical axioms, mathematical equations, software implementations, and AI neural network modules of the Ark Project are geometric and physical legacies published for the advancement of scientific research and knowledge dissemination.
-2. Open Research Safe Harbor: Universities, public research institutions, non-profit academic entities, independent researchers, and non-commercial open-source communities worldwide may freely use, study, integrate, modify, benchmark, and share this framework and its AI modules for non-commercial research, education, and open model weight distribution free of charge.
-3. Ecosystem Encouragement: The original author actively encourages the global open-source AI community to utilize these topological mechanisms and stabilization layers to explore macroscopic physical equilibrium and enhance the inferential stability of machine learning models.
+[Part 1: Open-Source Freedom, Academic Research, and Open Research Safe Harbor]
 
+1. Freedom of Academic and Open Science: All theoretical axioms, mathematical equations, formal verification proofs, and software implementations of the Ark Project are published to advance scientific research, enhance mathematical rigor, and disseminate public knowledge.
+2. Open Research Safe Harbor: Universities, public research institutions, non-profit academic organizations, independent researchers, and non-profit open-source communities worldwide may freely use, study, execute, integrate, modify, benchmark, and share this framework and its AI/computational modules free of charge solely for non-commercial research, academic publication, education, and non-commercial open model weight distribution. However, transferring outputs generated through non-profit entities to for-profit corporations for commercial purposes or deploying them in commercial production environments is strictly excluded from this Safe Harbor.
+3. Reproducibility and Verification Rights: Researchers and automated theorem provers / auditing systems are explicitly granted the right to clone, compile, and execute the Lean 4 formal verification suites, CAS symbolic scripts, and CFD benchmark pipelines contained herein to independently audit mathematical consistency.
 
-[Part 2: Restrictions on Commercial Use and Comprehensive Definition of Commercial AI Use]
-1. General Commercial Restrictions: Integrating this framework into commercial aerospace systems, proprietary computational fluid dynamics (CFD) software, or proprietary technology for corporate profit is strictly prohibited without prior written authorization.
-2. Comprehensive Definition of 'Commercial AI Use': Any of the following activities constitutes 'Commercial Use' under this license and is strictly forbidden without a separate, written Commercial License agreement executed with the original author:
-   a. [Commercial Service Deployment]: Utilizing this module, its algorithmic derivatives, or its kernels in the operational backend of paid APIs, cloud-based inference services, SaaS platforms, or proprietary commercial software.
-   b. [Internal Enterprise Infrastructure]: Deploying, running, or executing this module within the internal computing infrastructure (Internal Production) of for-profit corporations for purposes including, but not limited to, server energy reduction, compute acceleration, inference stabilization, or operational cost minimization.
-   c. [Distillation and Synthetic Data Transfer]: Utilizing synthetic data, logits, embeddings, or reasoning trajectories generated by models incorporating this module to train, fine-tune, pre-train, or distill knowledge into proprietary or commercial AI models.
-   d. [Proprietary Weight Monetization]: Selling, licensing for a fee, or redistributing model weights encapsulating this module under a proprietary, non-free commercial license.
-3. Commercial Licensing Obligation: Any corporate entity or enterprise seeking to utilize this framework or its AI modules for commercial purposes must negotiate and obtain an explicit Commercial License from the original author (Jung Soo Kim).
+[Part 2: Commercial Use Restrictions and Comprehensive AI/System Scope]
 
+1. General Commercial Restriction: Integrating this framework into commercial aerospace systems, proprietary computational fluid dynamics (CFD) software, industrial control systems, or proprietary technologies for corporate profit or commercial advantage without prior written authorization from the original author is strictly prohibited.
+2. Comprehensive Definition of 'Commercial AI and System Use': Any of the following activities constitutes 'Commercial Use' under this license and is strictly prohibited without a separate written commercial license agreement executed with the original author (Jung Soo Kim):
+  a. [Commercial Service Deployment]: Utilizing this framework, algorithmic derivatives, or kernels in the operational backend of paid APIs, cloud-based inference services, SaaS platforms, or commercial software.
+  b. [Internal Enterprise Infrastructure]: Deploying, running, or executing these modules within the internal computing infrastructure (in-house production environments) of a for-profit entity for purposes including, but not limited to, server energy (power/cooling) reduction, computational acceleration, inference stabilization, or operational cost minimization.
+  c. [Distillation and Synthetic Data Transfer]: Utilizing synthetic data, logits, hidden states, embeddings, or reasoning trajectories generated by models incorporating this framework to train, fine-tune, pre-train, or distill knowledge into proprietary or commercial AI models.
+  d. [Proprietary Weight Monetization]: Selling, licensing for a fee, or redistributing model weights, checkpoints, or adapters incorporating these modules under proprietary, paid, or non-free commercial licenses.
+  e. [OS Kernel and Datacenter Resource Governance]: Implementing the framework's mathematical equilibrium operators, topological scheduling, or selective dissipative/filtering kernels within commercial operating system kernels (including eBPF, sched_ext, DAMON, or XDP modules), hypervisors, or cloud cluster managers for commercial datacenter optimization.
+  f. [Algorithmic Translation and Hardware Porting]: Translating the core mathematical operators of this framework into other programming languages (e.g., C/C++, Rust, CUDA, OpenAI Triton) or porting them into hardware description languages (Verilog, VHDL, FPGA, ASIC) for commercial deployment.
+  g. [Black-Box Emulation and Parameter Extraction]: Reverse-engineering, black-box fitting, or training surrogate models on the numerical outputs or dynamical behaviors of this framework to tune, calibrate, or enhance commercial solvers or proprietary AI models.
+3. Mandatory Commercial Licensing: Any corporation or for-profit entity seeking to utilize this framework or its derivatives for any of the purposes specified above must consult with the original author and obtain an explicit written commercial license in advance.
 
-[Part 3: Software Linking, Derivative Weights Copyleft, and Attribution Metadata]
-1. Independence of Plugin / Drop-in Architecture: When this AI module is imported, injected, or linked as an independent plugin (e.g., via drop-in injection or monkey-patching) into external foundation models governed by permissive open-source licenses (such as Apache 2.0 or MIT), it does not alter or infringe upon the upstream license of the base model. However, the module itself, its attention/normalization kernels, and its execution layer remain 100% governed by this Non-Commercial (NC) Unified License.
-2. Derivative Weights Copyleft: Any derivative neural network weights, checkpoints, adapters (e.g., LoRA), or quantized models produced through pre-training, fine-tuning, or distillation utilizing this module MUST unconditionally inherit the identical Non-Commercial terms (CC BY-NC 4.0 and this Ark Project Unified License). This provision strictly prevents the laundering of open research into unauthorized proprietary enterprise models.
-3. Mandatory Model Metadata and Attribution: All public models and repositories incorporating this module must explicitly preserve the following metadata in their configuration files (`config.json`) and model cards (README):
-   * "Framework: Ark Project Zero-Point Core (ORCID: 0009-0006-5140-0604)"
-   * "License: Ark Project Unified License v2.0 (Non-Commercial / CC BY-NC 4.0 Anchor)"
+[Part 3: Open-Source Linking, Derived Weight Copyleft, and Attribution]
 
+1. Independence of Plug-in / Drop-in Architectures: When Ark Project modules are imported, injected, or linked as independent plug-ins or wrappers into external foundation models or open-source software governed by permissive licenses (e.g., Apache 2.0, MIT, BSD), they do not alter or infringe upon the upstream license of the base software. However, the Ark Project modules themselves, their mathematical kernels, and the coupled execution pipelines remain 100% governed by this Non-Commercial (NC) Unified License.
+2. Derived Weight Copyleft: All derived neural network weights, checkpoints, fine-tuning adapters (e.g., LoRA), or quantized models generated through pre-training, fine-tuning, or knowledge distillation utilizing this framework must unconditionally inherit the same non-commercial terms (CC BY-NC 4.0 and this Ark Project Unified License). This provision strictly prohibits the laundering of open-research checkpoints through third parties into unauthorized commercial enterprise distributions.
+3. Metadata and Provenance Preservation: All public repositories, source distributions, and AI model cards integrating this framework must explicitly preserve cryptographic and academic provenance records (ORCID, official archive DOIs, Software Heritage SWHIDs, etc.) and must include the following notice in their configuration files (config.json) and documentation (README.md):
+  - "Framework: Ark Project Zero-Point Core (Author: Jung Soo Kim, ORCID: 0009-0006-5140-0604)"
+  - "License: Ark Project Unified License v2.0 (CC BY-NC 4.0 Non-Commercial)"
 
-[Part 4: Topological Integrity, Safety Preservation, and Patent Defense]
-1. Maintenance of Geometric Integrity: All applications derived from this framework shall not be used for Non-reversible Structural Degradation applications that compromise the geometric integrity or thermodynamic stability of physical or virtual systems.
-2. Preservation of Safety Mechanisms: Users may not arbitrarily disable, circumvent, or degrade the core stabilizing mechanisms of this module (including quaternion rotation constraints, hydrostatic pressure buffers, vorticity-selective dissipation, or formal mathematical regularity bounds) and subsequently misrepresent or distribute such degraded systems under the original author's name.
-3. Automatic Revocation: Any breach of these license terms results in the immediate, automatic termination of all granted rights, subjecting the violating entity to full civil and criminal liabilities under copyright and unfair competition laws.
-4. Patent Defense and Retaliation: If any entity initiates patent infringement litigation against the original author regarding the mathematical architectures or algorithms herein, or attempts to misappropriate these core principles through unauthorized clean-room implementations for proprietary patenting, all rights granted to such entity under this license are permanently revoked.
+[Part 4: Field-of-Use Restrictions, Specification Integrity, and Patent Defense]
 
+1. Field-of-Use Restriction (Peaceful, Civilian, and Humanitarian Purposes Only): All rights granted under this license are valid exclusively for peaceful, civilian, and humanitarian purposes. Integrating or applying this framework into any system designed to cause or support loss of human life, bodily harm, disruption of critical infrastructure, or any activity prohibited under international law and international humanitarian law is explicitly excluded from the scope of this license and is strictly prohibited.
+2. Environmental and High-Risk Compliance: The operation of this framework must strictly comply with international environmental treaties and recognized industrial safety standards, and shall not be integrated without authorization into high-risk environmental control or artificial weather/climate intervention systems capable of causing irreversible environmental degradation or macroscopic ecological disruption.
+3. Specification Integrity and Non-Endorsement: The governing equations and algorithms of this framework are defined as a single Canonical Specification. Any modified versions that arbitrarily alter the mathematical or numerical constraints of the original architecture, or extract only partial components thereof, are classified as 'Non-Standard Derivatives' and shall not be represented, warranted, or distributed as equivalent to the author's canonical model or under the official name of the Ark Project.
+4. Prior Art Status and Patent Defense (Non-Appropriation & Defensive Termination): All mathematical equations, tensor architectures, and algorithmic implementations disclosed in this project constitute published Prior Art under global patent laws. No user or third party may file for patents or claim exclusive intellectual property rights—including via clean-room re-implementations or language translations—over the core technologies of this framework. If any party initiates patent infringement litigation or any other intellectual property dispute against the original author or compliant users in relation to this framework, all rights granted to such party under this license shall immediately and retroactively terminate as of the date such dispute is initiated.
+5. Automatic Termination: Upon any breach of Part 2, Part 3, or Part 4 of this license, all usage rights granted hereunder shall immediately, automatically, and permanently terminate without prior notice, and the violating party shall be subject to full legal remedies and damages under applicable copyright, intellectual property, and unfair competition laws.
 
-[Part 5: Academic Citation and Intellectual Integrity]
-1. Primary Citation Requirement: In accordance with academic ethics and this license, any secondary research, paper, or technical report utilizing this axiom system, the fluid model (NS_TZT), or the AI core modules must explicitly cite the original author (Jung Soo Kim / ORCID: 0009-0006-5140-0604) as the Primary Citation.
-2. Uncredited Derivatives: Any derived model or implementation that borrows this framework without explicit citation or with arbitrary parameter renaming shall officially be deemed an incomplete system that has forfeited its topological integrity.
+[Part 5: Academic Citation and Intellectual Provenance]
 
+1. Primary Reference Requirement: All academic papers, preprints, technical reports, or benchmark studies that utilize, extend, or evaluate the axiom systems, governing equations (H.U.G.G.E.R, TZT, Golden M0, NS_TZT), formal proofs, or solvers of the Ark Project must explicitly cite the original author (Jung Soo Kim, ORCID: 0009-0006-5140-0604) and the corresponding official archive DOIs as the 'Primary Reference'.
+2. Unauthorized Derivative Works: Any derived theoretical model or software implementation that appropriates the mathematical or algorithmic structure of this framework through variable renaming, notation substitution, or citation omission constitutes academic plagiarism and copyright infringement, and is formally defined as an incomplete model lacking structural integrity.
 
-[Part 6: Legal Disclaimer and Limitation of Liability]
-1. Provided "AS-IS": THIS FRAMEWORK, MANUSCRIPTS, SOURCE CODE, AND AI MODULES ARE PROVIDED "AS-IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
-2. Limitation of Liability: IN NO EVENT SHALL THE ORIGINAL AUTHOR (JUNG SOO KIM) BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITIES, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE USE, MISUSE, SOFTWARE INTEGRATION, OR INTERPRETATION OF THIS FRAMEWORK.
+[Part 6: Legal Disclaimer, Limitation of Liability, and Governing Law]
+
+1. Provided "AS-IS": This framework, manuscripts, formal proofs, source codes, datasets, and AI modules are provided "AS-IS", without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, safety, and non-infringement.
+2. Limitation of Liability: In no event shall the original author (Jung Soo Kim) be liable for any claim, damages, or other physical, financial, or legal liabilities, whether in an action of contract, tort, or other legal theory, arising from, out of, or in connection with the use, misuse, numerical execution, software integration, or interpretation of this framework.
+3. Governing Law and Exclusive Jurisdiction: This license and any legal disputes arising out of or relating to its interpretation, validity, or enforcement shall be governed by and construed in accordance with the laws of the Republic of Korea, excluding its conflict of laws principles. Any litigation or legal proceeding related to this license shall be subject to the exclusive jurisdiction of the competent courts located in the Republic of Korea having jurisdiction over the original author's domicile.
+4. Severability: If any provision of this license is held to be invalid or unenforceable by a court of competent jurisdiction, such provision shall be enforced to the maximum extent permissible to effect the original intent of the author, and the validity and enforceability of the remaining provisions shall remain in full force and effect.
+
+--------------------------------------------------------------------------------
+
+================================================================================
+||                                                                            
+||        아크 프로젝트 통합 라이선스 (AI 코어 및 위상 준수 에디션)           
+||      ARK PROJECT UNIFIED LICENSE (AI CORE & TOPOLOGICAL COMPLIANCE)        
+||                                                                            
+================================================================================
+
+버전 (Version): 2.0 (최종 표준화 판 / Final Standardized Edition)
+발행 연도 (Year): 2026
+저작자 (Author): 김정수 (Jung Soo Kim) / ORCID: 0009-0006-5140-0604
+공인 리포지토리 (Canonical Repository): https://github.com/ark-zeropoint/archive
+데이터셋 아카이브 (Dataset Archive): https://huggingface.co/datasets/ark-zeropoint/archive
+상용 라이선스 문의 (Commercial License Inquiry): https://naver.me/5OlzNQ7Q
+
+본 라이선스는 아크 프로젝트(Ark Project) 생태계와 이와 관련된 모든 지적, 물리적, 알고리즘적, 수학적 및 소프트웨어 자산을 규율하는 유일하고도 최상위의 법적 거버넌스 프로토콜을 구성합니다. 다음의 핵심 간행물, 이론적 프레임워크, 형식 검증 및 계산 아키텍처는 본 통합 라이선스에 의해 법적·구조적으로 구속됩니다:
+
+1. 기초 레거시 프레임워크: 'H.U.G.G.E.R 프레임워크 (v1.0–v1.3)' 및 '위상적 제로 텐서(Topological Zero Tensor, TZT) 프레임워크'
+2. 제1부: '거시적 중력-유체역학 및 0점 평형 운용을 위한 대통합 프레임워크 (H.U.G.G.E.R + TZT 전산유체역학(CFD))'
+3. 제2부: '0점 평형 운용을 위한 황금 M0 텐서 역학 (준주기 3-토러스 다양체상의 시그마-제로 공리계)'
+4. 제3부: '비압축성 유동을 위한 와도 선택적 소산 모델 (NS_TZT 격자하 규모 및 대역적 정칙성 시스템)'
+5. 검증 및 시뮬레이션 자산: Lean 4 기계화 형식 증명(.lean), 컴퓨터 대수학 시스템(CAS) 스크립트(.py), 의사 스펙트럼(pseudo-spectral) DNS/LES 솔버, 벤치마크 원격측정(telemetry) 데이터셋(.csv), 인터랙티브 웹 시뮬레이터 일체
+6. AI 및 시스템 커널 확장: 향후 공개될 모든 인공지능(AI) 신경망 아키텍처(Ark-ZPF 계층, 어텐션, 정규화, 소산형 KV-캐시 커널), 학습되었거나 파생된 모델 가중치, 운영체제/커널 수준의 자원 거버넌스 모듈 일체
+
+본 라이선스는 크리에이티브 커먼즈 저작자표시-비영리 4.0 국제(CC BY-NC 4.0) 표준(https://creativecommons.org/licenses/by-nc/4.0/)을 기반으로 하며, 오픈 사이언스, 소프트웨어 공학, AI 생태계 및 물리 연산 시스템에 맞춤화된 다음의 법적 준수 조항들을 엄격히 집행합니다.
+
+[제1부: 오픈소스 자유, 학술 연구 및 오픈 리서치 세이프 하버(Safe Harbor)]
+
+1. 학술 및 오픈 사이언스의 자유: 아크 프로젝트의 모든 이론적 공리, 수학적 방정식, 형식 검증 증명 및 소프트웨어 구현체는 과학적 연구 발전, 수학적 엄밀성 제고, 공공 지식의 확산을 위해 공개됩니다.
+2. 오픈 리서치 세이프 하버(면책 보호 구역): 전 세계의 대학, 공공 연구 기관, 비영리 학술 단체, 독립 연구자 및 비영리 오픈소스 커뮤니티는 순수 비영리 목적의 연구, 학술 논문 게재, 교육 및 비영리 오픈 모델 가중치 배포를 위해 본 프레임워크와 그 AI/연산 모듈을 무료로 자유롭게 사용, 연구, 실행, 통합, 수정, 벤치마킹 및 공유할 수 있습니다. 단, 비영리 기관을 경유하여 생성된 결과물이라 할지라도 이를 영리 기업의 상업적 목적에 이전하거나 프로덕션 환경에 투입하는 행위는 본 세이프 하버의 보호 대상에서 제외됩니다.
+3. 재현성 및 검증 권한: 연구자 및 자동화된 정리 증명기(Automated Theorem Prover) / 감사 시스템은 수학적 일관성을 독립적으로 감사하기 위해 본 프로젝트에 포함된 Lean 4 형식 검증 스위트, CAS 기호 연산 스크립트 및 CFD 벤치마크 파이프라인을 복제(clone), 컴파일 및 실행할 권리를 명시적으로 부여받습니다.
+
+[제2부: 상업적 사용 제한 및 포괄적 AI·시스템 적용 범위]
+
+1. 일반 상업적 제한: 원저작자의 사전 서면 승인 없이 기업의 영리 추구 또는 상업적 이익을 목적으로 본 프레임워크를 상용 항공우주 시스템, 독점 전산유체역학(CFD) 소프트웨어, 산업 제어 시스템 또는 사유(proprietary) 기술에 통합하는 행위는 엄격히 금지됩니다.
+2. '상업적 AI 및 시스템 사용'의 포괄적 정의: 다음 활동 중 어느 하나에 해당하는 행위는 본 라이선스상 '상업적 사용'으로 간주되며, 원저작자(김정수)와 체결한 별도의 서면 상용 라이선스 계약 없이는 엄격히 금지됩니다:
+  a. [상용 서비스 배포]: 유료 API, 클라우드 기반 추론 서비스, SaaS 플랫폼 또는 상용 소프트웨어의 운영 백엔드에 본 프레임워크, 알고리즘 파생물 또는 커널을 활용하는 행위.
+  b. [사내 엔터프라이즈 인프라]: 서버 에너지(전력/냉각) 절감, 연산 가속, 추론 안정화 또는 운영 비용 최소화 등을 포함하되 이에 국한되지 않는 목적으로 영리 기업의 내부 컴퓨팅 인프라(사내 프로덕션 환경) 내에서 본 모듈을 배포, 구동 또는 실행하는 행위.
+  c. [증류 및 합성 데이터 전이]: 본 프레임워크가 적용된 모델에서 생성된 합성 데이터, 로짓(logits), 은닉 상태(hidden states), 임베딩(embeddings) 또는 추론 경로(reasoning trajectories)를 활용하여 독점적 또는 상용 AI 모델을 학습, 파인튜닝, 사전 학습하거나 지식을 증류(distillation)하는 행위.
+  d. [독점 가중치 수익화]: 본 모듈을 내포한 모델 가중치, 체크포인트 또는 어댑터를 독점적이고 유료인 비자유 상용 라이선스 하에 판매, 유료 라이선싱 또는 재배포하는 행위.
+  e. [OS 커널 및 데이터센터 자원 거버넌스]: 상용 데이터센터 최적화를 위해 상용 운영체제 커널(eBPF, sched_ext, DAMON 또는 XDP 모듈 포함), 하이퍼바이저 또는 클라우드 클러스터 관리자 내에 본 프레임워크의 수학적 평형 연산자, 위상 스케줄링 또는 선택적 소산·필터링 커널을 구현하는 행위.
+  f. [알고리즘 변환 및 하드웨어 이식]: 상용 배포를 목적으로 본 프레임워크의 핵심 수학 연산자를 다른 프로그래밍 언어(예: C/C++, Rust, CUDA, OpenAI Triton 등)로 번역하거나 하드웨어 기술 언어(Verilog, VHDL, FPGA, ASIC)로 이식(porting)하는 행위.
+  g. [블랙박스 모사 및 파라미터 역추출]: 상용 솔버 또는 독점 AI 모델의 성능 고도화를 목적으로 본 프레임워크의 실행 결과물이나 수치적 거동 특성을 역공학(Reverse Engineering), 블랙박스 피팅(Black-box Fitting) 또는 대리 학습(Surrogate Training)하여 상업적 시스템에 이식하는 행위.
+3. 상용 라이선스 취득 의무: 상기 명시된 목적 중 어느 하나라도 본 프레임워크 또는 그 파생물을 활용하고자 하는 모든 법인 또는 영리 기업은 반드시 원저작자와 사전 협의하여 명시적인 서면 상용 라이선스를 취득해야 합니다.
+
+[제3부: 오픈소스 링킹, 파생 가중치 카피레프트 및 저작자표시]
+
+1. 플러그인 / 드롭인 아키텍처의 독립성: 아크 프로젝트 모듈이 관용적 라이선스(Apache 2.0, MIT, BSD 등)로 관리되는 외부 파운데이션 모델 또는 오픈소스 소프트웨어에 독립적인 플러그인이나 래퍼(wrapper) 형태로 임포트, 주입 또는 링크되는 경우, 기본 소프트웨어의 상위(upstream) 라이선스를 변경하거나 침해하지 않습니다. 단, 아크 프로젝트 모듈 자체, 그 수학적 커널 및 결합된 실행 파이프라인은 100% 본 비영리(NC) 통합 라이선스의 규율을 유지합니다.
+2. 파생 가중치 카피레프트(Copyleft): 본 프레임워크를 활용한 사전 학습, 파인튜닝 또는 지식 증류를 통해 생성된 모든 파생 신경망 가중치, 체크포인트, 파인튜닝 어댑터(예: LoRA) 또는 양자화 모델은 동일한 비영리 조건(CC BY-NC 4.0 및 본 아크 프로젝트 통합 라이선스)을 무조건 상속해야 합니다. 본 조항은 오픈소스 연구용 체크포인트를 제3자를 경유하여 무단 상용 기업 배포물로 전환(세탁)하는 행위를 엄격히 금지합니다.
+3. 메타데이터 및 출처 정보 보존 의무: 본 프레임워크를 통합한 모든 공개 저장소, 소스 배포판 및 AI 모델 카드(model cards)는 암호학적 및 학술적 출처 기록(ORCID, 공식 아카이브 DOI, Software Heritage SWHID 등)을 명시적으로 보존해야 하며, 해당 설정 파일(config.json) 및 문서(README.md)에 다음 고지 문구를 반드시 포함해야 합니다:
+  - "Framework: Ark Project Zero-Point Core (Author: Jung Soo Kim, ORCID: 0009-0006-5140-0604)"
+  - "License: Ark Project Unified License v2.0 (CC BY-NC 4.0 Non-Commercial)"
+
+[제4부: 사용 분야 제한, 기술 규격 무결성 및 특허 방어]
+
+1. 사용 분야의 제한 (평화적·민간적·인도주의적 목적 한정): 본 라이선스에 의해 부여되는 모든 권리는 오직 평화적, 민간적 및 인도주의적 목적(Peaceful, Civilian, and Humanitarian Purposes Only)의 활용에 한하여 유효합니다. 인명 피해, 신체적 상해, 주요 사회기반시설의 교란 또는 국제법 및 국제 인도법상 금지된 활동을 유발하거나 지원하는 시스템에 본 프레임워크를 적용하는 행위는 본 라이선스의 승인 범위에서 명시적으로 배제되며 엄격히 금지됩니다.
+2. 환경 및 고위험 시스템 안전 규제 준수: 본 프레임워크의 운용은 국제 환경 협약 및 공인된 산업 안전 표준을 엄격히 준수해야 하며, 비가역적 환경오염이나 광역 생태계 교란을 초래할 수 있는 고위험(High-Risk) 환경 제어 또는 인공 기상·기후 개입 시스템에 무단으로 통합될 수 없습니다.
+3. 기술 규격 무결성 및 명칭 보호: 본 프레임워크의 지배 방정식과 알고리즘은 단일 표준 규격(Canonical Specification)으로 정의됩니다. 원본 아키텍처의 수학적·수치적 제약 조건을 임의로 변경하거나 일부 구성요소만 발췌한 수정본은 '비표준 파생물(Non-Standard Derivative)'로 분류되며, 이를 원저작자의 공인 모델과 동일한 것으로 표시·보증하거나 아크 프로젝트의 공식 명칭을 사용하여 배포할 수 없습니다.
+4. 선행기술 지위 및 특허 방어 (Non-Appropriation & Defensive Termination): 본 프로젝트에 공개된 모든 수학 방정식, 텐서 아키텍처 및 알고리즘 구현체는 전 세계 특허법상 공지된 선행기술(Prior Art)을 구성합니다. 어떠한 사용자나 제3자도 클린룸 재구현 또는 언어 변환 방식을 포함하여 본 프레임워크의 핵심 기술에 대해 특허를 출원하거나 배타적 지식재산권을 주장할 수 없습니다. 본 프레임워크와 관련하여 원저작자 또는 본 라이선스를 준수하는 사용자를 상대로 특허 침해 소송이나 기타 지식재산권 분쟁을 제기하는 당사자에 대해서는, 본 라이선스 하에 부여된 모든 권리가 분쟁 제기 시점에 소급하여 즉시 영구 종료됩니다.
+5. 권리의 자동 종료 (Automatic Termination): 본 라이선스의 제2부, 제3부 또는 제4부의 조항을 위반할 경우 본 라이선스에 의해 부여된 모든 사용 권한은 별도의 사전 통지 없이 즉각적이며 자동적으로 종료되며, 위반 당사자는 관련 저작권법, 지식재산권법 및 부정경쟁방지법에 따른 모든 법적 배상 및 구제 조치의 대상이 됩니다.
+
+[제5부: 학술 인용 및 지적 출처 무결성]
+
+1. 1차 참고문헌 인용 요건: 아크 프로젝트의 공리계, 지배 방정식(H.U.G.G.E.R, TZT, Golden M0, NS_TZT), 형식 증명 또는 솔버를 활용, 확장 또는 평가하는 모든 학술 논문, 프리프린트(사전 공개본), 기술 보고서 또는 벤치마크 연구는 원저작자(김정수, ORCID: 0009-0006-5140-0604) 및 이에 대응하는 공식 아카이브 DOI를 '1차 참고문헌(Primary Reference)'으로 명시적으로 인용해야 합니다.
+2. 무단 도용 파생물 규정: 변수명 변경, 표기법 치환 또는 인용 누락을 통해 본 프레임워크의 수학적·알고리즘적 구조를 도용하는 모든 파생 이론 모델 또는 소프트웨어 구현체는 학술적 표절이자 저작권 침해로 간주되며, 공식적으로 구조적 무결성이 결여된 불완전한 모델로 규정됩니다.
+
+[제6부: 법적 면책 조항, 책임의 제한 및 관할권]
+
+1. "있는 그대로(AS-IS)" 제공: 본 프레임워크, 원고, 형식 증명, 소스 코드, 데이터셋 및 AI 모듈은 상품성, 특정 목적에의 적합성, 안전성 및 비침해성에 대한 보증을 포함하되 이에 국한되지 않고, 명시적이든 묵시적이든 어떠한 형태의 보증도 없이 "있는 그대로(AS-IS)" 제공됩니다.
+2. 책임의 제한: 어떠한 경우에도 원저작자(김정수)는 계약, 불법 행위 또는 기타 법적 이론에 따른 것이든, 본 프레임워크의 사용, 오용, 수치적 실행, 소프트웨어 통합 또는 해석으로 인해 발생하거나 이와 관련하여 발생하는 일체의 청구, 손해 또는 기타 물리적·재정적·법적 책임에 대해 책임을 지지 않습니다.
+3. 준거법 및 전속적 관할권 (Governing Law & Jurisdiction): 본 라이선스의 해석, 효력 및 집행과 관련하여 발생하는 모든 법적 분쟁은 대한민국 법률(Laws of the Republic of Korea)을 준거법으로 하며, 국제사법상 저촉법 규정은 배제됩니다. 본 라이선스와 관련된 모든 소송이나 법적 절차는 대한민국 내 원저작자 소재지 관할 법원을 제1심 전속적 관할 법원으로 합니다.
+4. 분리 가능성 (Severability): 본 라이선스의 특정 조항이 관할 법원에 의해 무효이거나 집행 불가능한 것으로 판단되더라도, 해당 조항은 원저작자의 본래 의도를 달성할 수 있는 최대 범위 내에서 유효한 것으로 해석되며, 나머지 조항들의 법적 효력에는 어떠한 영향도 미치지 않습니다.
 ================================================================================
